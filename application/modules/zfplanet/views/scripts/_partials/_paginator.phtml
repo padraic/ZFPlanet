@@ -1,0 +1,44 @@
+<nav role="navigation">
+    <? if ($this->pageCount): ?>
+        <div class="paginationControl">
+            <?= $this->firstItemNumber; ?> - <?= $this->lastItemNumber; ?>
+            of <?= $this->totalItemCount; ?>
+
+            <!-- First page link -->
+            <? if (isset($this->previous)): ?>
+                <a href="<?= $this->url(array('pageNumber' => $this->first), 'paginator'); ?>">
+                    First
+                </a> |
+            <? else: ?>
+                <span class="disabled">First</span> |
+            <? endif; ?>
+
+            <!-- Previous page link -->
+            <? if (isset($this->previous)): ?>
+                <a href="<?= $this->url(array('pageNumber' => $this->previous), 'paginator'); ?>">
+                    &lt; Previous
+                </a> |
+            <? else: ?>
+                <span class="disabled">&lt; Previous</span> |
+            <? endif; ?>
+
+            <!-- Next page link -->
+            <? if (isset($this->next)): ?>
+                <a href="<?= $this->url(array('pageNumber' => $this->next), 'paginator'); ?>">
+                    Next &gt;
+                </a> |
+            <? else: ?>
+                <span class="disabled">Next &gt;</span> |
+            <? endif; ?>
+
+            <!-- Last page link -->
+            <?php if (isset($this->next)): ?>
+                <a href="<?= $this->url(array('pageNumber' => $this->last), 'paginator'); ?>">
+                    Last
+                </a>
+            <? else: ?>
+                <span class="disabled">Last</span>
+            <? endif; ?>
+        </div>
+    <? endif; ?>   
+</nav>
