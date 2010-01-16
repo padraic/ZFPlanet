@@ -1,0 +1,35 @@
+#!/usr/bin/env php
+<?php
+define('APPLICATION_ENV', 'development');
+ 
+// Define path to application directory
+defined('APPLICATION_PATH')
+    || define('APPLICATION_PATH', dirname(__FILE__) . '/../application');
+    
+// Define root for application parent directory
+defined('APPLICATION_ROOT')
+    || define('APPLICATION_ROOT', dirname(APPLICATION_PATH));
+ 
+// Define application environment
+defined('APPLICATION_ENV')
+    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
+ 
+set_include_path(implode(PATH_SEPARATOR, array(
+    realpath(APPLICATION_PATH . '/../library'),
+    get_include_path(),
+)));
+ 
+/** Zend_Application */
+require_once 'Zend/Application.php';
+ 
+// Create application, bootstrap, and run
+$application = new Zend_Application(
+    APPLICATION_ENV,
+    APPLICATION_PATH . '/configs/application.ini'
+);
+ 
+$application->getBootstrap()->bootstrap('doctrine');
+$options = $application->getOption('doctrine');
+ 
+$cli = new Doctrine_Cli($options);
+$cli->run($_SERVER['argv']);

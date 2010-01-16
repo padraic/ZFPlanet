@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/zfstde/!svn/ver/165/trunk/website/library/ZFBlog/Form
+END
+EntryAdd.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/zfstde/!svn/ver/2/trunk/website/library/ZFBlog/Form/EntryAdd.php
+END
+AuthorLogin.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/zfstde/!svn/ver/2/trunk/website/library/ZFBlog/Form/AuthorLogin.php
+END
+CommentAdd.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/zfstde/!svn/ver/165/trunk/website/library/ZFBlog/Form/CommentAdd.php
+END
+EntryEdit.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/zfstde/!svn/ver/2/trunk/website/library/ZFBlog/Form/EntryEdit.php
+END

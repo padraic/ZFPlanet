@@ -1,0 +1,12 @@
+<article>
+    <header>
+        <h2><a href="<?= $this->escape($this->entry->uri) ?>"><?= $this->escape($this->entry->title) ?></a></h2>
+        <small>Posted <time><?= $this->escape($this->entry->publishedDate) ?></time>
+            by <a href="<?= $this->escape($this->entry->Feed->Blog->uri) ?>"><?= $this->escape($this->entry->author) ?></a>
+            on <a href="<?= $this->escape($this->entry->Feed->Blog->uri) ?>"><?= $this->escape($this->entry->Feed->title) ?></a>
+        </small>
+    </header>
+    <div>
+        <?= $this->entry->content ?>
+    </div>
+</article>

@@ -1,0 +1,136 @@
+<?php
+
+class ZFBlog_Form_CommentAdd extends ZFBlog_Form
+{
+
+    public function init()
+    {
+        $this->setAction('/comment/process');
+        $this->setElementFilters(array('StringTrim'));
+
+        // Configuration Data
+        $config = Zend_Registry::get('configuration');
+
+        // Display Group #1 : Comment Data
+
+        $this->addElement('text', 'author', array(
+            'decorators' => $this->_standardElementDecorator,
+            'label' => 'Name:',
+            'attribs' => array(
+                'maxlength' => 60,
+                'size' => 60
+            ),
+            'validators' => array(
+                array('StringLength', false, array(3,60))
+            ),
+            'required' => true
+        ));
+
+        $this->addElement('text', 'email', array(
+            'decorators' => $this->_standardElementDecorator,
+            'label' => 'Email:',
+            'attribs' => array(
+                'maxlength' => 200,
+                'size' => 60
+            ),
+            'validators' => array(
+                array('StringLength', false, array(6,200)),
+                array('EmailAddress')
+            ),
+            'required' => true
+        ));
+
+        $this->addElement('text', 'url', array(
+            'decorators' => $this->_standardElementDecorator,
+            'label' => 'Url:<br/><small><em>(Optional)</em></small>',
+            'attribs' => array(
+                'maxlength' => 200,
+                'size' => 60
+            ),
+            'validators' => array(
+                array('StringLength', false, array(12,200))
+            ),
+            'required' => false
+        ));
+
+        $this->addElement('textarea', 'body', array(
+            'decorators' => $this->_standardElementDecorator,
+            'label' => 'Comment:<br/><small><em>Some HTML allowed (p, em, strong, a, ul, ol, li, code, pre, blockquote, img)<br/>Use pre for code snippets</em></small>',
+            'attribs' => array(
+                'class'=>'comment',
+                'rows'=>10
+            ),
+            'validators' => array(
+                array('Akismet', false,
+                    array(
+                        $config->akismet->key,
+                        'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF']
+                    )
+                )
+            ),
+            'filters' => array('HtmlBody'),
+            'required' => true
+        ));
+
+        $this->addElement('checkbox', 'remember_me', array(
+            'decorators' => $this->_standardElementDecorator,
+            'label' => 'Remember Me:',
+            'validators' => array(
+                'Digits'
+            ),
+            'required' => false
+        ));
+
+        $this->addElement('hidden', 'paragraph_id', array(
+            'decorators' => $this->_noElementDecorator,
+            'validators' => array(
+                'Alnum'
+            ),
+            'required' => true
+        ));
+
+        $this->addElement('hidden', 'chapter_id', array(
+            'decorators' => $this->_noElementDecorator,
+            'validators' => array(
+                array('Regex', false, array("/^[a-z0-9\.]+$/"))
+            ),
+            'required' => true
+        ));
+
+        $this->addDisplayGroup(
+            array('author','email','url','body','remember_me','paragraph_id','chapter_id'),
+            'addcomment',
+            array(
+                'disableLoadDefaultDecorators' => true,
+                'decorators' => $this->_standardGroupDecorator,
+                'legend' => 'Add Comment'
+            )
+        );
+
+        // Display Group #2 : Submit
+
+        $this->addElement('submit', 'submit', array(
+            'decorators' => $this->_buttonElementDecorator,
+            'label' => 'Save'
+        ));
+
+        $this->addDisplayGroup(
+            array('submit'), 'commentsubmit',
+            array(
+                'disableLoadDefaultDecorators' => true,
+                'decorators' => $this->_buttonGroupDecorator,
+                'class' => 'submit'
+            )
+        );
+
+        // Leave the door open for HTTP options!
+        if (Zend_Registry::isRegistered('httpOptions')) {
+            $customClient = new Zend_Http_Client(null,
+                Zend_Registry::get('httpOptions')->toArray()
+            );
+            ZFBlog_Validate_Akismet::setHttpClient(
+                $customClient
+            );
+        }
+    }
+}

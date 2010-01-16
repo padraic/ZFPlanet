@@ -1,0 +1,8 @@
+<? if (count($this->entries) == 0): ?>
+    <p>No entries to display</p>
+<? else: ?>
+    <? $this->partial()->setObjectKey('entry') ?>
+    <? foreach($this->entries as $entry): ?>
+        <?= $this->partial('_partials/_entry.phtml', $entry) ?>
+    <? endforeach; ?>
+<? endif; ?>

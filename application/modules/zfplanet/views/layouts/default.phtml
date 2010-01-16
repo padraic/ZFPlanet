@@ -1,0 +1,46 @@
+<?php echo $this->doctype() . "\n" ?>
+<html>
+<head>
+<?php
+echo $this->headMeta()->setIndent('    ') . "\n";
+echo $this->headTitle('ZF Planet')
+    ->setSeparator(' / ')->setIndent('    ') . "\n";
+echo $this->headScript()->prependFile(
+    'http://html5shiv.googlecode.com/svn/trunk/html5.js',
+    'text/javascript',
+    array('conditional'=>'IE')) . "\n";
+?>
+<link rel="alternate" type="application/atom+xml" href="http://zfplanet/feed/atom"/>
+<link rel="alternate" type="application/rss+xml" href="http://zfplanet/feed/rss"/>
+</head>
+<body id="page">
+    <div id="document">
+
+        <header id="header" role="banner">
+            <hgroup>
+                <h1><a href="/">ZF Planet</a></h1>
+                <h2>Zend Framework Blog Planet</h2>
+            </hgroup>
+            <nav role="navigation">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <div id="body" role="main">
+            <section id="content">
+                <?php echo $this->layout()->content ?>
+            </section>
+        </div>
+
+        <footer id="footer" role="contentinfo">
+            <p>Copyright &copy; 2009 Pádraic Brady</p>
+            <p>Powered by <a href="http://framework.zend.com">Zend Framework
+            </a></p>
+        </footer>
+
+    </div>
+</body>
+</html>
