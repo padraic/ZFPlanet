@@ -1,0 +1,30 @@
+/**
+ * HTML 5 Block Display
+ *
+ * Required by most, if not all, browsers until support is added.
+ */
+article, aside, dialog, figure, footer, header, hgroup, nav, section {
+    display: block;
+}
+
+/**
+ * Basic Elements
+ */
+body {
+    font-family: Geneva, Verdana, Helvetica, sans-serif;
+    text-align: left;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: Helvetica, Arial, Calibri, sans-serif;
+}
+a:link, a:visited {
+    color: blue;
+    text-decoration: none;
+}
+a:hover {
+    color: red;
+    text-decoration: underline;
+}
+div#document {
+    margin-left: 10px;
+}

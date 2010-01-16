@@ -10,6 +10,10 @@ echo $this->headScript()->prependFile(
     'text/javascript',
     array('conditional'=>'IE')) . "\n";
 ?>
+<?= $this->headLink()->setIndent(' ')
+    ->appendStylesheet('http://yui.yahooapis.com/combo?3.0.0/build/cssfonts/fonts-min.css&3.0.0/build/cssreset/reset-min.css&3.0.0/build/cssgrids/grids-min.css&3.0.0/build/cssbase/base-min.css')
+    ->appendStylesheet('/css/style.css') . "\n "; ?>
+
 <link rel="alternate" type="application/atom+xml" href="http://zfplanet/feed/atom"/>
 <link rel="alternate" type="application/rss+xml" href="http://zfplanet/feed/rss"/>
 </head>
