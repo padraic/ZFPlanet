@@ -12,6 +12,15 @@ Zend_Feed_Writer and Zend_Feed_Pubsubhubbub. This allows it to server as a
 demonstration platform for individuals interested in seeing how all these pieces
 can be used in a single application.
 
+Disclaimer
+==========
+
+No claim is made that this is a stable application. It's currently in
+development, has quirks, will change rapidly up to the end of January, and there
+are pieces of functionality yet to be added. It is not yet suitable to be used
+in production. It's presented here untagged and non-versioned as a demo app for
+Zend Framework 1.10. I'll switch its status to stable when its ready ;).
+
 Prerequisites
 =============
 
