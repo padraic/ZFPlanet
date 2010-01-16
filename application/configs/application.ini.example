@@ -76,6 +76,15 @@ resources.router.routes.callback.route = "callback/:subscriptionKey"
 resources.router.routes.callback.defaults.module = "zfplanet"
 resources.router.routes.callback.defaults.controller = "callback"
 resources.router.routes.callback.defaults.action = "index"
+resources.router.routes.callback.reqs.subscriptionKey = \w+
+
+; Paginator Route
+resources.router.routes.paginator.route = "page/:pageNumber"
+resources.router.routes.paginator.defaults.module = "zfplanet"
+resources.router.routes.paginator.defaults.controller = "index"
+resources.router.routes.paginator.defaults.action = "page"
+resources.router.routes.paginator.defaults.pageNumber = 1
+resources.router.routes.paginator.reqs.pageNumber = \d+
 
 [staging : production]
 
