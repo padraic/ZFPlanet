@@ -1,1 +1,3 @@
 application/configs/*.ini
+data/session/*
+data/tmp/*

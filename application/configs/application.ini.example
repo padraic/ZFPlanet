@@ -27,6 +27,7 @@ resources.frontController.prefixDefaultModule = true
 resources.frontController.moduleDirectory = APPLICATION_PATH "/modules"
 resources.frontController.params.displayExceptions = 0
 resources.frontController.actionHelperPaths.ZFExt_Controller_Action_Helper = "ZFExt/Controller/Action/Helper"
+resources.frontController.plugins[] = "ZFExt_Controller_Plugin_Auth"
 
 ; Module Settings
 resources.modules[] =
@@ -47,7 +48,6 @@ resources.layout.layout = "default"
 resources.layout.layoutPath = APPLICATION_PATH "/modules/zfplanet/views/layouts"
 
 ; Session Resource Settings
-resources.session.strict = true
 resources.session.name = "ZFPLANET"
 resources.session.save_path = APPLICATION_PATH "/../data/session"
 resources.session.gc_maxlifetime = 900

@@ -103,3 +103,17 @@ Subscription:
             type: timestamp
         subscription_state:
             type: string(12)
+User:
+    columns:
+        id:
+            type: integer
+            primary: true
+            autoincrement: true
+        name:
+            type: string(25)
+        password:
+            type: string(64)
+        email:
+            type: string(100)
+        lastLoginDate:
+            type: timestamp
