@@ -34,6 +34,8 @@ resources.modules[] =
 
 ; View Resource Settings
 resources.view.encoding = "UTF-8"
+resources.view.helperPath.Zfplanet_View_Helper = APPLICATION_PATH "/modules/zfplanet/views/helpers"
+resources.view.helperPathPrefix.Zfplanet_View_Helper = "Zfplanet_View_Helper"
 
 ; View HTML Specific Settings
 resources.view.charset = "UTF-8"
