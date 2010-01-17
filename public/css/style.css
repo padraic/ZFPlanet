@@ -9,16 +9,26 @@ a:hover {
     color: red;
     text-decoration: underline;
 }
-section#content article {
-    margin-bottom: 20px;
-}
-footer {
-    min-width: 900px;
+
+/**
+ * Main Header Styling
+ */
+header#header {
+    background-color: #dcdcdc;
+    margin-bottom: 0;
+    padding-left: 5px;
 }
 
 /**
- * Article Backgrounds/Positioning
+ * Article Wrapping Styling
  */
+
+/**
+ * Article Styling
+ */
+section#content article {
+    margin-bottom: 20px;
+}
 article.even {
     background-color: #ffffff;
 }
@@ -29,7 +39,48 @@ article{
     padding: 0 5px 0 5px;
     margin-left: 0;
     margin-right: 0;
+    margin-bottom: 10px;
 }
 section#content {
     margin-left: 0;
+}
+header.article-header h2 {
+    margin-bottom: 10px;
+}
+header.article-header {
+    margin-bottom: 10px;
+}
+header.article-header small {
+    font-size: 80%;
+}
+
+/**
+ * Footer Styling
+ */
+footer {
+    text-align: center;
+    background-color: #dcdcdc;
+}
+footer p {
+    margin-bottom: 0;
+}
+
+/**
+ * Sideinfo Styling
+ */
+.sideinfo {
+    background-color: #dcdcdc;
+    padding-left: 5px;
+    margin-bottom: 10px;
+}
+.sideinfo header h3 {
+    margin-bottom: 10px;
+}
+
+/**
+ * Paginator Styling
+ */
+nav#paginate {
+    text-align: center;
+    margin-bottom: 10px;
 }

@@ -30,20 +30,42 @@ echo $this->headScript()->prependFile(
         
         <div class="clear"></div>
 
-        <div class="container_12">
-            <section id="content" class="grid_9" role="main">
+        <div id="content-wrapper" class="container_12">
+            <div id="content" class="grid_9" role="main">
                 <?php echo $this->layout()->content ?>
-            </section>
-            <section id="sideinfo" class="grid_3">
-                <!-- No content yet... -->
-            </section>
+            </div>
+
+            <div id="sideinfo" class="grid_3">
+
+                <aside class="sideinfo">
+                    <header>
+                        <h3>Feeds</h3>
+                    </header>
+                    <a href="/feed/atom">Atom 1.0 <img src="/images/feedicon.gif" alt="Atom 1.0 Feed"/></a><br/>
+                    <a href="/feed/rss">RSS 2.0 <img src="/images/feedicon.gif" alt="Atom 1.0 Feed"/></a>
+                </aside>
+
+                <aside class="sideinfo">
+                    <header>
+                        <h3>Bloggers</h3>
+                    </header>
+                </aside>
+
+            </div>
+            
         </div>
+        
+        <? if ($this->placeholder('paginator')): ?>
+            <div class="clear"></div>
+            <nav id="paginate" class="container_12" role="navigation">
+                <?= $this->placeholder('paginator') ?>
+            </nav>
+        <? endif; ?>
 
         <div class="clear"></div>
 
         <footer id="footer" class="container_12" role="contentinfo">
-            <p>Feeds: <a href="/feed/atom">Atom 1.0</a>, <a href="/feed/rss">RSS 2.0</a></p>
-            <p>ZFPlanet: Copyright &copy; 2009 Pádraic Brady</p>
+            <p><a href="http://github.com/padraic/ZFPlanet">ZFPlanet</a> &copy; 2009 Pádraic Brady</p>
             <p>Powered by <a href="http://framework.zend.com">Zend Framework</a></p>
         </footer>
 

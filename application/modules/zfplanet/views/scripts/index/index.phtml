@@ -7,5 +7,10 @@
         <?= $this->partial('_partials/_entry.phtml', $entry) ?>
         </article>
     <? endforeach; ?>
-    <?= $this->paginationControl($this->paginator, 'Sliding', '_partials/_paginator.phtml'); ?>
+    
+    <?
+    $paginator = $this->paginationControl($this->paginator, 'Sliding', '_partials/_paginator.phtml');
+    $this->placeholder('paginator')->set($paginator);
+    ?>
+    </nav>
 <? endif; ?>
