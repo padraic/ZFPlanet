@@ -3,7 +3,7 @@
 class Zfplanet_View_Helper_ShortenArticle extends Zend_View_Helper_Abstract
 {
 
-    public function shortenArticle($content, $length = 2500, $encoding = null)
+    public function shortenArticle($content, $length = 5000, $encoding = null)
     {
         
         if (is_null($encoding)) $encoding = $this->view->getEncoding();
