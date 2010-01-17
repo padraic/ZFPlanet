@@ -121,9 +121,10 @@ class Zfplanet_Model_Feed extends Zfplanet_Model_Base_Feed
             'p', 'em', 'strong', 'small', 'h1', 'h2', 'h3', 'h4', 'h5',
             'ul', 'ol', 'li', 'code', 'pre', 'blockquote',
             'img[src|alt|height|width|style]', 'sub', 'sup', 'a[href|rel]',
-            'div', 'span', 'br'
+            'div', 'span[class]', 'br'
         )));
         $config->set('HTML.Doctype', 'XHTML 1.0 Strict');
+        $config->set('Filter.YouTube', true);
         if (isset($extra)) {
             foreach ($extra as $key=>$value) {
                 $config->set($key, $value);
