@@ -6,5 +6,7 @@
     </small>
 </header>
 <div>
-    <?= $this->entry->content ?>
+    <?= $this->shortenArticle($this->entry->content) ?>
+    <p><br/><a href="<?= $this->escape($this->entry->uri) ?>">Link to original article by
+    <?= $this->escape($this->entry->author) ?></a></p>
 </div>
