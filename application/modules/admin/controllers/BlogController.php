@@ -46,12 +46,31 @@ class Admin_BlogController extends Zend_Controller_Action
             $feed->title = Zfplanet_Model_Feed::getHtmlPurifier()->purify($data->getTitle());
             $feed->isActive = 1;
             $feed->save();
-            $form->reset();
-            $this->view->addBlogForm = $form;
+            $this->_checkPubsubEnabled($data);
+            $this->_redirect('/admin');
         } catch (Exception $e) {
             $this->view->success = false;
             $this->view->addBlogForm = $form;
         }
+    }
+    
+    protected function _checkPubsubEnabled(Zend_Feed_Reader_FeedAbstract $feed)
+    {
+        if (!$feed->getHubs()) {
+            return;
+        }
+        $hubs = $feed->getHubs();;
+        $sub = new Zend_Feed_Pubsubhubbub_Subscriber;
+        $sub->setStorage(Doctrine_Core::getTable('Zfplanet_Model_Subscription'));
+        $sub->addHubUrls($hubs);
+        $sub->setTopicUrl($feed->getFeedLink());
+        $sub->usePathParameter();
+        $sub->setCallbackUrl(
+            $this->_helper->getHelper('Url')->simple(null, 'callback', 'zfplanet')
+        );
+        try {
+            $sub->subscribeAll();
+        } catch (Exception $e) {/*do something about failures later*/}
     }
 
 }

@@ -7,7 +7,7 @@ class Zfplanet_CallbackController extends Zend_Controller_Action
     {
         $this->_helper->layout()->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
-        $storage = new Zfplanet_Model_SubscriptionTable;
+        $storage = Doctrine_Core::getTable('Zfplanet_Model_Subscription');
         $callback = new Zend_Feed_Pubsubhubbub_Subscriber_Callback;
         $callback->setStorage($storage);
         $callback->setSubscriptionKey($this->_getParam('subscriptionKey'));
@@ -38,9 +38,7 @@ class Zfplanet_CallbackController extends Zend_Controller_Action
         $data = file_get_contents($path);
         $feed = Zend_Feed_Reader::importString($data);
         unlink($path);
-        $feedModel = Doctrine_Core::getTable('Zfplanet_Model_Feed')->find(
-            $feed->getId()
-        );
+        $feedModel = Doctrine_Core::getTable('Zfplanet_Model_Feed')->find($feed->getId());
         if ($feedModel) {
             $feedModel->synchronise($feed);
         } else {
