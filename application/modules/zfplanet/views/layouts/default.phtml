@@ -4,47 +4,48 @@
 <?php
 echo $this->headMeta()->setIndent('    ') . "\n";
 echo $this->headTitle('ZF Planet')
-    ->setSeparator(' / ')->setIndent('    ') . "\n";
+    ->setIndent('    ')->setSeparator(' / ') . "\n    ";
 echo $this->headScript()->prependFile(
     'http://html5shiv.googlecode.com/svn/trunk/html5.js',
     'text/javascript',
     array('conditional'=>'IE')) . "\n";
 ?>
-<?= $this->headLink()->setIndent(' ')
-    ->appendStylesheet('http://yui.yahooapis.com/combo?3.0.0/build/cssfonts/fonts-min.css&3.0.0/build/cssreset/reset-min.css&3.0.0/build/cssgrids/grids-min.css&3.0.0/build/cssbase/base-min.css')
-    ->appendStylesheet('/css/style.css') . "\n "; ?>
-
-<link rel="alternate" type="application/atom+xml" href="http://zfplanet/feed/atom"/>
-<link rel="alternate" type="application/rss+xml" href="http://zfplanet/feed/rss"/>
+<?= $this->headStyle()->setIndent('    ')
+    ->prependStyle('article, aside, dialog, figure, footer, header, hgroup, nav, section {display: block;}') . "\n" ?>
+<?= $this->headLink()->setIndent('    ')
+    ->appendStylesheet('http://github.com/nathansmith/960-Grid-System/raw/master/code/css/reset.css')
+    ->appendStylesheet('http://github.com/nathansmith/960-Grid-System/raw/master/code/css/960.css')
+    ->appendStylesheet('http://github.com/nathansmith/960-Grid-System/raw/master/code/css/text.css')
+    ->appendStylesheet('/css/style.css') . "\n"; ?>
+    <link rel="alternate" type="application/atom+xml" href="http://zfplanet/feed/atom"/>
+    <link rel="alternate" type="application/rss+xml" href="http://zfplanet/feed/rss"/>
 </head>
 <body id="page">
-    <div id="document">
 
-        <header id="header" role="banner">
+        <header id="header" class="container_12" role="banner">
             <hgroup>
                 <h1><a href="/">ZF Planet</a></h1>
-                <h2>Zend Framework Blog Planet</h2>
             </hgroup>
-            <nav role="navigation">
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="#">About</a></li>
-                </ul>
-            </nav>
         </header>
+        
+        <div class="clear"></div>
 
-        <div id="body" role="main">
-            <section id="content">
+        <div class="container_12">
+            <section id="content" class="grid_9" role="main">
                 <?php echo $this->layout()->content ?>
+            </section>
+            <section id="sideinfo" class="grid_3">
+                <!-- No content yet... -->
             </section>
         </div>
 
-        <footer id="footer" role="contentinfo">
+        <div class="clear"></div>
+
+        <footer id="footer" class="container_12" role="contentinfo">
             <p>Feeds: <a href="/feed/atom">Atom 1.0</a>, <a href="/feed/rss">RSS 2.0</a></p>
             <p>ZFPlanet: Copyright &copy; 2009 Pádraic Brady</p>
             <p>Powered by <a href="http://framework.zend.com">Zend Framework</a></p>
         </footer>
 
-    </div>
 </body>
 </html>

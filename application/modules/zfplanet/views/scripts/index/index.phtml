@@ -3,7 +3,9 @@
 <? else: ?>
     <? $this->partial()->setObjectKey('entry') ?>
     <? foreach ($this->paginator as $entry): ?>
+        <article class="<?= $this->cycle(array('odd','even'))->next() ?>">
         <?= $this->partial('_partials/_entry.phtml', $entry) ?>
+        </article>
     <? endforeach; ?>
     <?= $this->paginationControl($this->paginator, 'Sliding', '_partials/_paginator.phtml'); ?>
 <? endif; ?>
