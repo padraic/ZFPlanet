@@ -76,6 +76,12 @@ footer p {
 .sideinfo header h3 {
     margin-bottom: 10px;
 }
+ul.list-bloggers {
+    list-style: none;
+}
+ul.list-bloggers li {
+    margin-left: 0;
+}
 
 /**
  * Paginator Styling
