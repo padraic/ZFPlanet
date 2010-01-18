@@ -41,8 +41,8 @@ class Zfplanet_View_Helper_ShortenArticle extends Zend_View_Helper_Abstract
      */
     protected function _addContinuationMarker($content)
     {
-        $content = preg_replace("/(<a[^>]*)$/D", '', $content);
-        $content = preg_replace("/(<img[^>]*)$/D", '', $content);
+        $content = preg_replace("/(<a[^>]*)$/Di", '', $content);
+        $content = preg_replace("/(<img[^>]*)$/Di", '', $content);
         return $content . '<span><em>[...]</em></span>';
     }
 
