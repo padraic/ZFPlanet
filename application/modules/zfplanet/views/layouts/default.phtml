@@ -1,15 +1,14 @@
-<?php echo $this->doctype() . "\n" ?>
+<?= $this->doctype() . "\n" ?>
 <html>
 <head>
-<?php
-echo $this->headMeta()->setIndent('    ') . "\n";
-echo $this->headTitle('ZF Planet')
-    ->setIndent('    ')->setSeparator(' / ') . "\n    ";
-echo $this->headScript()->prependFile(
+<?= $this->headMeta()->setIndent('    ')
+    ->prependHttpEquiv('Content-Style-Type', 'text/css'). "\n"; ?>
+<?= $this->headTitle('ZF Planet')
+    ->setIndent('    ')->setSeparator(' / ') . "\n    "; ?>
+<?= $this->headScript()->prependFile(
     'http://html5shiv.googlecode.com/svn/trunk/html5.js',
     'text/javascript',
-    array('conditional'=>'IE')) . "\n";
-?>
+    array('conditional'=>'IE')) . "\n"; ?>
 <?= $this->headStyle()->setIndent('    ')
     ->prependStyle('article, aside, dialog, figure, footer, header, hgroup, nav, section {display: block;}') . "\n" ?>
 <?= $this->headLink()->setIndent('    ')

@@ -14,7 +14,10 @@ class Zfplanet_View_Helper_ShortenArticle extends Zend_View_Helper_Abstract
             $tidy = new tidy;
             $tidy->parseString(
                 $content . '<em>[...]</em>',
-                array('output-xhtml'=>true),
+                array(
+                    'output-xhtml' => true,
+                    'show-body-only' => true
+                ),
                 str_replace('-','',$encoding)
             );
             $tidy->cleanRepair();
