@@ -53,6 +53,10 @@ header.article-header {
 header.article-header small {
     font-size: 80%;
 }
+p.truncated {
+    margin-top: 0;
+    margin-bottom: 0;
+}
 
 /**
  * Footer Styling

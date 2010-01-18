@@ -25,7 +25,7 @@ class Zfplanet_View_Helper_ShortenArticle extends Zend_View_Helper_Abstract
         } else {
             $content = $this->_addContinuationMarker($content);
         }
-        return $content . '<p style="margin-bottom:0;">'
+        return $content . '<p class="truncated">'
         . '<br/><em>Content was truncated. Another ' . ($realLength - $length)
         . ' characters remain in original article.</em></p>';
     }
