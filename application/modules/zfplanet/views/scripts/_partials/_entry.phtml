@@ -5,8 +5,6 @@
         on <a href="<?= $this->escape($this->entry->Feed->Blog->uri) ?>"><?= $this->escape($this->entry->Feed->title) ?></a>
     </small>
 </header>
-<div>
-    <?= $this->shortenArticle($this->entry->content) ?>
-    <p><br/><a href="<?= $this->escape($this->entry->uri) ?>">Link to original article by
-    <?= $this->escape($this->entry->author) ?></a></p>
-</div>
+<?= $this->shortenArticle($this->entry->content) ?>
+<p><br/><a href="<?= $this->escape($this->entry->uri) ?>">Link to original article by
+<?= $this->escape($this->entry->author) ?></a></p>
