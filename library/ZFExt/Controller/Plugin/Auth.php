@@ -3,7 +3,7 @@
 class ZFExt_Controller_Plugin_Auth extends Zend_Controller_Plugin_Abstract
 {
 
-    public function preDispatch()
+    public function preDispatch(Zend_Controller_Request_Abstract $request)
     {
         if ($this->getRequest()->getParam('module') !== 'admin') {
             return;
