@@ -249,7 +249,7 @@ class ZFExt_Auth_Adapter_Doctrine implements Zend_Auth_Adapter_Interface
      * @param array $resultIdentities
      * @return true|Zend_Auth_Result
      */
-    protected function _authenticateValidateResultSet(array $resultIdentities)
+    protected function _authenticateValidateResultSet($resultIdentities)
     {
 
         if (count($resultIdentities) < 1) {

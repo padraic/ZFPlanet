@@ -44,10 +44,7 @@ class Admin_UserController extends Zend_Controller_Action
         $auth = Zend_Auth::getInstance();
         $result  = $auth->authenticate($authAdapter);
         if (!$result->isValid()) {
-            $this->view->userLoginForm = $form;
-            $form->setDescription('Could not authenticate with given credentials.');
-            $this->_helper->viewRenderer->setNoRender();
-            $this->render('login');
+            $this->_redirect('/admin/user/login');
             return;
         }
         Zend_Session::regenerateId();
