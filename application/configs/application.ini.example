@@ -28,6 +28,7 @@ resources.frontController.moduleDirectory = APPLICATION_PATH "/modules"
 resources.frontController.params.displayExceptions = 0
 resources.frontController.actionHelperPaths.ZFExt_Controller_Action_Helper = "ZFExt/Controller/Action/Helper"
 resources.frontController.plugins[] = "ZFExt_Controller_Plugin_Auth"
+resources.frontController.plugins[] = "ZFExt_Controller_Plugin_LayoutSwitcher"
 
 ; Module Settings
 resources.modules[] =
