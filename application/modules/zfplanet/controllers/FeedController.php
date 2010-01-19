@@ -14,6 +14,7 @@ class Zfplanet_FeedController extends Zend_Controller_Action
             ->from('Zfplanet_Model_Entry')
             ->orderBy('dateModified DESC')
             ->fetchone();
+        // todo: check if this was successful in case no entries yet
         $lastSyncDate = new Zend_Date(
             $lastSyncedEntry->dateModified,
             Zend_Date::ISO_8601
