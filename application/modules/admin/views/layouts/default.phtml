@@ -23,7 +23,7 @@
 
         <header id="header" class="container_12" role="banner">
             <hgroup>
-                <h1><a href="/">ZF Planet</a></h1>
+                <h1><a href="/">ZF Planet Administration</a></h1>
             </hgroup>
         </header>
         
@@ -31,28 +31,8 @@
 
         <div id="content-wrapper" class="container_12">
             <div id="content" class="grid_9" role="main">
-                <?php echo $this->layout()->content ?>
+                <?= $this->layout()->content ?>
             </div>
-
-            <div id="sideinfo" class="grid_3">
-
-                <aside class="sideinfo">
-                    <header>
-                        <h3>Feeds</h3>
-                    </header>
-                    <a href="/feed/atom">Atom 1.0 <img src="/images/feedicon.gif" alt="Atom 1.0 Feed"/></a><br/>
-                    <a href="/feed/rss">RSS 2.0 <img src="/images/feedicon.gif" alt="Atom 1.0 Feed"/></a>
-                </aside>
-
-                <aside class="sideinfo">
-                    <header>
-                        <h3>Bloggers</h3>
-                    </header>
-                    <?= $this->listBloggers() ?>
-                </aside>
-
-            </div>
-            
         </div>
         
         <? if ($this->placeholder('paginator')): ?>
