@@ -8,7 +8,7 @@ class Zfplanet_View_Helper_ShortenArticle extends Zend_View_Helper_Abstract
         
         if (is_null($encoding)) $encoding = $this->view->getEncoding();
         $realLength = iconv_strlen($content, $encoding);
-        if ($realLength <= $length) return '<div class="article-body">' . $content . '</div>';
+        if ($realLength <= $length) return '<div class="entry-content article-body">' . $content . '</div>';
         $content = iconv_substr($content, 0, $length, $encoding);
         if (class_exists('tidy', false)) {
             $tidy = new tidy;
@@ -25,7 +25,7 @@ class Zfplanet_View_Helper_ShortenArticle extends Zend_View_Helper_Abstract
         } else {
             $content = $this->_addContinuationMarker($content);
         }
-        return '<div class="article-body">' . $content . '</div><p class="truncated">'
+        return '<div class="entry-content article-body">' . $content . '</div><p class="truncated">'
         . '<br/><em>Content was truncated. Another ' . ($realLength - $length)
         . ' characters remain in original article.</em></p>';
     }

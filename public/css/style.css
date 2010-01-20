@@ -60,6 +60,9 @@ p.truncated {
 div.article-body > p:last-of-type {
     margin-bottom: 0;
 }
+.article-header address {
+    display: inline;
+}
 
 /**
  * Footer Styling

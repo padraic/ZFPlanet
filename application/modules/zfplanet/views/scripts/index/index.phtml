@@ -3,7 +3,8 @@
 <? else: ?>
     <? $this->partial()->setObjectKey('entry') ?>
     <? foreach ($this->paginator as $entry): ?>
-        <article class="<?= $this->cycle(array('odd','even'))->next() ?>">
+        <article class="hentry <?= $this->cycle(array('odd','even'))->next() ?>"
+        id="<?= $this->escape($entry->id) ?>">
         <?= $this->partial('_partials/_entry.phtml', $entry) ?>
         </article>
     <? endforeach; ?>

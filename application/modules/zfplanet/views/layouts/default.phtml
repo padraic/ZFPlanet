@@ -18,6 +18,7 @@
     ->appendStylesheet('/css/style.css') . "\n"; ?>
     <link rel="alternate" type="application/atom+xml" href="http://zfplanet/feed/atom"/>
     <link rel="alternate" type="application/rss+xml" href="http://zfplanet/feed/rss"/>
+    <link rel="profile" href="http://microformats.org/profile/hcard"/>
 </head>
 <body id="page">
 
@@ -30,7 +31,7 @@
         <div class="clear"></div>
 
         <div id="content-wrapper" class="container_12">
-            <div id="content" class="grid_9" role="main">
+            <div id="content" class="hfeed grid_9" role="main">
                 <?php echo $this->layout()->content ?>
             </div>
 
