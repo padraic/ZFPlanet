@@ -11,6 +11,8 @@
         on <a href="<?= $this->escape($this->entry->Feed->Blog->uri) ?>"><?= $this->escape($this->entry->Feed->title) ?></a>
     </small>
 </header>
-<?= $this->shortenArticle($this->entry->content) ?>
+<div class="entry-content article-body">
+    <?= $this->shortenArticle($this->entry->content) ?>
+</div>
 <p><br/><a href="<?= $this->escape($this->entry->uri) ?>">Link to original article by
 <?= $this->escape($this->entry->author) ?></a></p>
