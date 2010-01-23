@@ -47,11 +47,13 @@ class Admin_BlogController extends Zend_Controller_Action
             $feed->isActive = 1;
             $feed->save();
             $this->_checkPubsubEnabled($data);
+            $blog->save();
+            $feed->save();
             $this->_redirect('/admin');
-        } catch (Exception $e) {
-            $this->view->success = false;
-            $this->view->addBlogForm = $form;
-        }
+        //} catch (Exception $e) {
+            //$this->view->success = false;
+            //$this->view->addBlogForm = $form;
+        //}
     }
     
     protected function _checkPubsubEnabled(Zend_Feed_Reader_FeedAbstract $feed)
@@ -68,9 +70,9 @@ class Admin_BlogController extends Zend_Controller_Action
         $sub->setCallbackUrl(
             $this->_helper->getHelper('Url')->simple(null, 'callback', 'zfplanet')
         );
-        try {
+        //try {
             $sub->subscribeAll();
-        } catch (Exception $e) {/*do something about failures later*/}
+        //} catch (Exception $e) {/*do something about failures later*/}
     }
 
 }
