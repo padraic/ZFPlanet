@@ -14,16 +14,13 @@ class Zfplanet_CallbackController extends Zend_Controller_Action
         $callback->handle();
         if ($callback->hasFeedUpdate()) {
             $data = $callback->getFeedUpdate();
-            /*$key = md5($data);
+            $key = md5($data);
             file_put_contents(APPLICATION_PATH . '/../data/tmp/' . $key, $data);
             $this->_helper->getHelper('Spawn')
                 ->setScriptPath(APPLICATION_PATH . '/../scripts/zf-cli');
             $this->_helper->spawn(
                 array('--key'=>$key), 'process', 'callback'
-            );*/
-            $feed = Zend_Feed_Reader::importString($data);
-            $feedModel = Doctrine_Core::getTable('Zfplanet_Model_Feed')->find($feed->getId());
-            $feedModel->synchronise($feed);
+            );
         }
         $callback->sendResponse();
     }
@@ -45,7 +42,7 @@ class Zfplanet_CallbackController extends Zend_Controller_Action
         if ($feedModel) {
             $feedModel->synchronise($feed);
         } else {
-            // log the problem
+            throw new Exception('Unable to parse feed containing: ' . $data);
         }
     }
 
