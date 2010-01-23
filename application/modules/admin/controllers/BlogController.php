@@ -68,11 +68,21 @@ class Admin_BlogController extends Zend_Controller_Action
         $sub->setTopicUrl($feed->getFeedLink());
         $sub->usePathParameter();
         $sub->setCallbackUrl(
-            $this->_helper->getHelper('Url')->simple(null, 'callback', 'zfplanet')
+            $this->_getCallbackUri()
         );
         //try {
             $sub->subscribeAll();
         //} catch (Exception $e) {/*do something about failures later*/}
+    }
+    
+    protected function _getCallbackUri()
+    {
+        $uri = Zend_Uri::factory('http');
+        $uri->setHost($_SERVER['HTTP_HOST']);
+        $uri->setPath(
+            $this->_helper->getHelper('Url')->simple(null, 'callback', 'zfplanet')
+        );
+        return rtrim($uri->getUri(), '/');
     }
 
 }
