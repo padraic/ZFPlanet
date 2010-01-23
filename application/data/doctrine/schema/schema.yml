@@ -91,8 +91,6 @@ Subscription:
             type: string(255)
         created_time:
             type: timestamp
-        last_modified:
-            type: timestamp
         lease_seconds:
             type: integer(6)
         verify_token:

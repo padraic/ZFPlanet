@@ -9,7 +9,6 @@
  * @property string $topic_url
  * @property string $hub_url
  * @property timestamp $created_time
- * @property timestamp $last_modified
  * @property integer $lease_seconds
  * @property string $verify_token
  * @property string $secret
@@ -40,9 +39,6 @@ abstract class Zfplanet_Model_Base_Subscription extends Doctrine_Record
              'length' => '255',
              ));
         $this->hasColumn('created_time', 'timestamp', null, array(
-             'type' => 'timestamp',
-             ));
-        $this->hasColumn('last_modified', 'timestamp', null, array(
              'type' => 'timestamp',
              ));
         $this->hasColumn('lease_seconds', 'integer', 6, array(

@@ -9,6 +9,7 @@
  * @property string $name
  * @property string $password
  * @property string $email
+ * @property timestamp $lastLoginDate
  * 
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
@@ -36,6 +37,9 @@ abstract class Zfplanet_Model_Base_User extends Doctrine_Record
         $this->hasColumn('email', 'string', 100, array(
              'type' => 'string',
              'length' => '100',
+             ));
+        $this->hasColumn('lastLoginDate', 'timestamp', null, array(
+             'type' => 'timestamp',
              ));
     }
 

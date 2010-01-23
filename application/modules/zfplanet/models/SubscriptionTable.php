@@ -22,9 +22,10 @@ class Zfplanet_Model_SubscriptionTable extends Doctrine_Table
         if ($result) {
             $data['created_time'] = $result->created_time;
             $now = new Zend_Date;
-            $data['last_modified'] = $now->get('yyyy-MM-dd HH:mm:ss');
-            $data['expiration_time'] = $now->add($result->lease_seconds, Zend_Date::SECOND) // should be hub though...
+            if ($data['lease_seconds']) {
+                $data['expiration_time'] = $now->add($data['lease_seconds'], Zend_Date::SECOND) // should be hub though...
                 ->get('yyyy-MM-dd HH:mm:ss');
+            }
             $result->merge($data);
             $result->save();
             return false;
