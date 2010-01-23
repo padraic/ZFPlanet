@@ -26,7 +26,7 @@ class Admin_BlogController extends Zend_Controller_Action
             $this->view->addBlogForm = $form;
         }
         $values = $form->getValues();
-        try {
+        //try {
             $blog = new Zfplanet_Model_Blog;
             $blog->contactName = $values['contactName'];
             if (isset($values['contactEmail'])) {
