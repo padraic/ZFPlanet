@@ -1,4 +1,5 @@
 application/configs/*.ini
 data/session/*
-data/tmp/*
-data/cache/htmlpurifier/*
+data/cache/htmlpurifier/HTML
+data/cache/htmlpurifier/CSS
+data/cache/htmlpurifier/URI
