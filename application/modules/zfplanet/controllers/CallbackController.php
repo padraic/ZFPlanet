@@ -19,7 +19,7 @@ class Zfplanet_CallbackController extends Zend_Controller_Action
             $this->_helper->getHelper('Spawn')
                 ->setScriptPath(APPLICATION_PATH . '/../scripts/zf-cli');
             $this->_helper->spawn(
-                array('--key'=>$key), 'process', 'callback'
+                array('--key'=>$key), 'process', 'callback', 'zfplanet'
             );
         }
         $callback->sendResponse();
