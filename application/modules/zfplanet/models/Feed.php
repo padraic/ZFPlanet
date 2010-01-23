@@ -50,42 +50,44 @@ class Zfplanet_Model_Feed extends Zfplanet_Model_Base_Feed
     public function synchronise(Zend_Feed_Reader_FeedAbstract $feed = null)
     {
         try {
-            if (is_null($feed)) {
-                Zend_Feed_Reader::setHttpClient($this->getHttpClient());
-                $feed = Zend_Feed_Reader::import($this->uri);
+        if (is_null($feed)) {
+            Zend_Feed_Reader::setHttpClient($this->getHttpClient());
+            $feed = Zend_Feed_Reader::import($this->uri);
+        }
+        if ($this->uri !== $feed->getFeedLink() && !is_null($feed->getFeedLink())) {
+            $this->uri = $feed->getFeedLink();
+            $this->save();
+        }
+        foreach ($feed as $entry) {
+            $entryHash = md5(
+                trim($entry->getTitle())
+                . trim($entry->getDescription())
+                . trim($entry->getContent())
+            );
+            $currentEntry = Doctrine_Query::create()
+                ->from('Zfplanet_Model_Entry')
+                ->where('feedId = ?', $this->id)
+                ->andWhere('id = ?', $entry->getId())
+                ->fetchone();
+            if ($currentEntry && $entryHash == $currentEntry->signatureHash) {
+                continue;
+            } elseif ($currentEntry) {
+                $this->_setCommonData($currentEntry, $entry, $entryHash);
+                $currentEntry->save();
+            } else {
+                $newEntry = new Zfplanet_Model_Entry;
+                $newEntry->id = $entry->getId();
+                $newEntry->feedId = $this->id;
+                $newEntry->uri = $entry->getLink();
+                $this->_setCommonData($newEntry, $entry, $entryHash);
+                $newEntry->publishedDate = $entry->getDateCreated()
+                    ->get(Zend_Date::ISO_8601);
+                $newEntry->isActive = 1;
+                $newEntry->save();
             }
-            if ($this->uri !== $feed->getFeedLink() && !is_null($feed->getFeedLink())) {
-                $this->uri = $feed->getFeedLink();
-                $this->save();
-            }
-            foreach ($feed as $entry) {
-                $entryHash = md5(
-                    trim($entry->getTitle())
-                    . trim($entry->getDescription())
-                    . trim($entry->getContent())
-                );
-                $currentEntry = Doctrine_Query::create()
-                    ->from('Zfplanet_Model_Entry')
-                    ->where('feedId = ?', $this->id)
-                    ->andWhere('id = ?', $entry->getId())
-                    ->fetchone();
-                if ($currentEntry && $entryHash == $currentEntry->signatureHash) {
-                    continue;
-                } elseif ($currentEntry) {
-                    $this->_setCommonData($currentEntry, $entry, $entryHash);
-                    $currentEntry->save();
-                } else {
-                    $newEntry = new Zfplanet_Model_Entry;
-                    $newEntry->id = $entry->getId();
-                    $newEntry->feedId = $this->id;
-                    $newEntry->uri = $entry->getLink();
-                    $this->_setCommonData($newEntry, $entry, $entryHash);
-                    $newEntry->publishedDate = $entry->getDateCreated()
-                        ->get(Zend_Date::ISO_8601);
-                    $newEntry->isActive = 1;
-                    $newEntry->save();
-                }
-            }
+        }
+        } catch (Exception $e) {
+            echo $e->getMessage(); exit;
         }
     }
     
