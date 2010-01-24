@@ -18,6 +18,11 @@ class Zfplanet_CronController extends Zend_Controller_Action
         if (!$feeds) {
             return;
         }
+        $chelper = $this->_helper->getHelper('Cache');
+        if ($chelper->hasCache('feed')) {
+            Zend_Feed_Reader::setCache($chelper->getCache('feed'));
+            Zend_Feed_Reader::useHttpConditionalGet();
+        }
         foreach($feeds as $feed) {
             $feed->synchronise();
         }
