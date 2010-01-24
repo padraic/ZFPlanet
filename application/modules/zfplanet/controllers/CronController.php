@@ -24,9 +24,10 @@ class Zfplanet_CronController extends Zend_Controller_Action
         $feeds = Doctrine_Query::create()
             ->from('Zfplanet_Model_Feed f')
             ->where(
-                'f.uri NOT IN (SELECT s.topic_url FROM Zfplanet_Model_Subscription s WHERE s.subscription_state = ?)',
-                Zend_Feed_Pubsubhubbub::SUBSCRIPTION_VERIFIED
-            )->execute();
+                'f.uri NOT IN (SELECT s.topic_url FROM Zfplanet_Model_Subscription s'
+                . 'WHERE s.subscription_state = ?)',
+                Zend_Feed_Pubsubhubbub::SUBSCRIPTION_VERIFIED)
+            ->execute();
         if (!$feeds) {
             return;
         }
