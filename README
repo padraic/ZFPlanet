@@ -83,8 +83,14 @@ production environment. The output is directed to the null device and not logged
 runs would echo any Exceptions to the screen for simple debugging/logging over
 the pipe.
 
-7. Add some blogs! The Administration Modules is currently unauthenticated (hence
-no live hosting yet!), so simple direct your browser to http://yourhost/admin.
+7. Add some blogs! At present a default user is not created (all users are
+Administrators). You can manually add one to the database's "user" table. The
+password should be a SHA256 hash of the actual password if entered directly into
+the entry via something like the mysql cli or phpmyadmin.
+
+To access the administration section, simply direct your browser to
+http://yourhost/admin.
+
 From here you can add blogs to be aggregated. The time to add a blog is variable
 since several tasks are performed on each such as grabbing the feed to confirm
 specific details and setting up any possible Pubsubhubbub subscriptions.
