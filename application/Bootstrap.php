@@ -55,7 +55,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $manager->setAttribute(Doctrine_Core::ATTR_AUTOLOAD_TABLE_CLASSES, true);
         $manager->setAttribute(Doctrine_Core::ATTR_EXPORT, Doctrine_Core::EXPORT_ALL);
         $manager->setCharset('utf8');
-        $manager->setCollate('utf8_unicode_ci'); 
+        $manager->setCollate('utf8_unicode_ci');
+        if (function_exists('apc_add')) {
+            $cacheDriver = new Doctrine_Cache_Apc;
+            $manager->setAttribute(Doctrine_Core::ATTR_QUERY_CACHE, $cacheDriver);
+        } 
         $manager->openConnection($doctrineConfig['connection_string']);
         Doctrine_Core::loadModels($doctrineConfig['models_path']);
         return $manager;
