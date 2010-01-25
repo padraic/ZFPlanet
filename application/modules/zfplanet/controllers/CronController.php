@@ -41,6 +41,7 @@ class Zfplanet_CronController extends Zend_Controller_Action
         foreach($feeds as $feed) {
             $feed->synchronise();
         }
+        $this->_helper->getHelper('Cache')->removePagesTagged('all-entries');
     }
 
 }

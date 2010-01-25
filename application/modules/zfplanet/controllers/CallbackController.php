@@ -41,6 +41,7 @@ class Zfplanet_CallbackController extends Zend_Controller_Action
         $feedModel = Doctrine_Core::getTable('Zfplanet_Model_Feed')->find($feed->getId());
         if ($feedModel) {
             $feedModel->synchronise($feed);
+            $this->_helper->getHelper('Cache')->removePagesTagged('all-entries');
         } else {
             throw new Exception('Unable to parse feed containing: ' . $data);
         }
