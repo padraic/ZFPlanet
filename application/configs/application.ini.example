@@ -29,6 +29,8 @@ resources.frontController.params.displayExceptions = 0
 resources.frontController.actionHelperPaths.ZFExt_Controller_Action_Helper = "ZFExt/Controller/Action/Helper"
 resources.frontController.plugins[] = "ZFExt_Controller_Plugin_Auth"
 resources.frontController.plugins[] = "ZFExt_Controller_Plugin_LayoutSwitcher"
+; Required for page level caching
+resources.frontController.params.disableOutputBuffering = true
 
 ; Module Settings
 resources.modules[] =
@@ -72,6 +74,10 @@ doctrine.generate_models_options.baseClassPrefixFiles = false
 doctrine.generate_models_options.classPrefix = "Zfplanet_Model_"
 doctrine.generate_models_options.classPrefixFiles = false
 doctrine.generate_models_options.generateTableClasses = true
+
+; Custom Caches (Adjustments To Default CacheManager)
+resources.cacheManager.page.backend.options.public_dir = APPLICATION_PATH "/../public/cached"
+resources.cacheManager.tagcache.backend.options.cache_dir = APPLICATION_PATH "/../data/cache/tags"
 
 ; ROUTES
 ; Callback Route For Pubsubhubbub Callbacks

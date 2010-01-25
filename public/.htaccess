@@ -1,6 +1,13 @@
 RewriteEngine On
+
+RewriteRule ^/(.*)/$ /$1 [QSA]
+RewriteRule ^$ cached/index.html [QSA]
+RewriteRule ^([^.]+)/$ cached/$1.html [QSA]
+RewriteRule ^([^.]+)$ cached/$1.html [QSA]
+
 RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
+
 RewriteRule ^.*$ - [NC,L]
 RewriteRule ^.*$ index.php [NC,L]
