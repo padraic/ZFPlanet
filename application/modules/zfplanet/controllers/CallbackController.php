@@ -42,6 +42,7 @@ class Zfplanet_CallbackController extends Zend_Controller_Action
         if ($feedModel) {
             $feedModel->synchronise($feed);
             $this->_helper->getHelper('Cache')->removePagesTagged(array('allentries'));
+            $this->_helper->notifyHub(array('http://pubsubhubbub.appspot.com/'));
         } else {
             throw new Exception('Unable to parse feed containing: ' . $data);
         }

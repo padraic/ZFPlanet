@@ -9,6 +9,7 @@ class Zfplanet_FeedController extends Zend_Controller_Action
     {
         $this->_helper->layout()->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
+        //$this->_helper->cache(array('atom', 'rss'), array('allentries'), '.xml');
         $lastSyncedEntry = Doctrine_Query::create()
             ->select('dateModified')
             ->from('Zfplanet_Model_Entry')

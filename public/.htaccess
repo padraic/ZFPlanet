@@ -3,6 +3,7 @@ RewriteEngine On
 RewriteRule ^(scripts|css|images)/(.+)\.(.+)\.(js|css|jpg|gif|png)$ $1/$2.$4 [L]
 
 RewriteRule ^/(.*)/$ /$1 [QSA]
+RewriteRule ^/(feed/.*)/$ /$1.xml [QSA]
 RewriteRule ^$ cached/index.html [QSA]
 RewriteRule ^([^.]+)/$ cached/$1.html [QSA]
 RewriteRule ^([^.]+)$ cached/$1.html [QSA]
