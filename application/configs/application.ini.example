@@ -77,7 +77,7 @@ doctrine.generate_models_options.generateTableClasses = true
 
 ; Custom Caches (Adjustments To Default CacheManager)
 resources.cacheManager.page.backend.options.public_dir = APPLICATION_PATH "/../public/cached"
-resources.cacheManager.tagcache.backend.options.cache_dir = APPLICATION_PATH "/../data/cache/tags"
+resources.cacheManager.pagetag.backend.options.cache_dir = APPLICATION_PATH "/../data/cache/tags"
 
 ; ROUTES
 ; Callback Route For Pubsubhubbub Callbacks

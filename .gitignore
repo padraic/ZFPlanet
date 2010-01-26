@@ -4,6 +4,7 @@ data/cache/htmlpurifier/HTML
 data/cache/htmlpurifier/CSS
 data/cache/htmlpurifier/URI
 data/cache/feeds/zend*
+data/cache/tags/zend*
 public/cached/page/*
 public/cached/feed/*
 public/cached/*.html

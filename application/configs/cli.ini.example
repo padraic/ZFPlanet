@@ -49,7 +49,7 @@ resources.cacheManager.feed.frontend.options.automatic_serialization = true
 resources.cacheManager.feed.frontend.options.lifetime = 86400
 resources.cacheManager.feed.backend.options.cache_dir = APPLICATION_PATH "/../data/cache/feeds"
 resources.cacheManager.page.backend.options.public_dir = APPLICATION_PATH "/../public/cached"
-resources.cacheManager.tagcache.backend.options.cache_dir = APPLICATION_PATH "/../data/cache/tags"
+resources.cacheManager.pagetag.backend.options.cache_dir = APPLICATION_PATH "/../data/cache/tags"
 
 [staging : production]
 

@@ -25,7 +25,7 @@ class Zfplanet_CronController extends Zend_Controller_Action
             ->from('Zfplanet_Model_Feed f')
             ->where(
                 'f.uri NOT IN (SELECT s.topic_url FROM Zfplanet_Model_Subscription s'
-                . 'WHERE s.subscription_state = ?)',
+                . ' WHERE s.subscription_state = ?)',
                 Zend_Feed_Pubsubhubbub::SUBSCRIPTION_VERIFIED)
             ->execute();
         if (!$feeds) {
@@ -41,7 +41,7 @@ class Zfplanet_CronController extends Zend_Controller_Action
         foreach($feeds as $feed) {
             $feed->synchronise();
         }
-        $this->_helper->getHelper('Cache')->removePagesTagged('all-entries');
+        $this->_helper->getHelper('Cache')->removePagesTagged(array('allentries'));
     }
 
 }
