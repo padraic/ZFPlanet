@@ -56,6 +56,9 @@ resources.cacheManager.feed.frontend.options.lifetime = 86400
 resources.cacheManager.feed.backend.options.cache_dir = APPLICATION_PATH "/../data/cache/feeds"
 resources.cacheManager.page.backend.options.public_dir = APPLICATION_PATH "/../public/cached"
 resources.cacheManager.pagetag.backend.options.cache_dir = APPLICATION_PATH "/../data/cache/tags"
+resources.cacheManager.page.backend.options.cache_file_umask = 0644
+resources.cacheManager.page.backend.options.cache_directory_umask = 0755
+resources.cacheManager.pagetag.backend.options.cache_file_umask = 0644
 
 [staging : production]
 
