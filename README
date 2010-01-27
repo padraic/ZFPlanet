@@ -54,6 +54,11 @@ application.ini and cli.ini respectively. Note the presence of the following lin
 in each:
 
     doctrine.connection_string = "mysql://username:password@127.0.0.1/databasename"
+
+At the top of cli.ini, you should edit the value of the "host" configuration
+setting to reflect the hostname of your URI, e.g. example.com. This is used to
+generate URIs for the application when the CLI tasks are running (since we cannot
+access $_SERVER['HTTP_HOST'] from the command line.
     
 4. Create a new database (and optionally user). Edit the above configuration line
 in both configuration files to reflect these details. The initial protocol name
