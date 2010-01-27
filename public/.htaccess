@@ -1,16 +1,24 @@
+AddType application/rss+xml .xml
+AddType application/atom+xml .xml
+
 RewriteEngine On
 
 RewriteRule ^(scripts|css|images)/(.+)\.(.+)\.(js|css|jpg|gif|png)$ $1/$2.$4 [L]
 
-RewriteRule ^/(.*)/$ /$1 [QSA]
-RewriteRule ^/(feed/.*)/$ /$1.xml [QSA]
-RewriteRule ^$ cached/index.html [QSA]
-RewriteRule ^([^.]+)/$ cached/$1.html [QSA]
-RewriteRule ^([^.]+)$ cached/$1.html [QSA]
+RewriteCond %{REQUEST_URI} feed/rss$
+RewriteCond %{DOCUMENT_ROOT}/cached/%{REQUEST_URI}.xml -f
+RewriteRule .* cached/%{REQUEST_URI}.xml [L,T=application/rss+xml]
+
+RewriteCond %{REQUEST_URI} feed/atom$
+RewriteCond %{DOCUMENT_ROOT}/cached/%{REQUEST_URI}.xml -f
+RewriteRule .* cached/%{REQUEST_URI}.xml [L,T=application/atom+xml]
+
+RewriteCond %{DOCUMENT_ROOT}/cached/%{REQUEST_URI}.(html|xml|json|opml) -f
+RewriteRule .* cached/%{REQUEST_URI}.%1 [L]
 
 RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
-
 RewriteRule ^.*$ - [NC,L]
+
 RewriteRule ^.*$ index.php [NC,L]

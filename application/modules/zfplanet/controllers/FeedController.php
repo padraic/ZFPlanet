@@ -9,7 +9,7 @@ class Zfplanet_FeedController extends Zend_Controller_Action
     {
         $this->_helper->layout()->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
-        //$this->_helper->cache(array('atom', 'rss'), array('allentries'), '.xml');
+        $this->_helper->cache(array('atom', 'rss'), array('allentries'), 'xml');
         $lastSyncedEntry = Doctrine_Query::create()
             ->select('dateModified')
             ->from('Zfplanet_Model_Entry')
@@ -55,6 +55,7 @@ class Zfplanet_FeedController extends Zend_Controller_Action
             ->execute();
         $now = new Zend_Date;
         $feed = new Zend_Feed_Writer_Feed;
+         // TODO: Extract site info to config file and detect feed URLs automatically from HOST
         $feed->setTitle('ZF Planet');
         $feed->setDescription('Zend Framework Blog Planet');
         $feed->setDateModified($now);
