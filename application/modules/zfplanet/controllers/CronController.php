@@ -42,7 +42,7 @@ class Zfplanet_CronController extends Zend_Controller_Action
             $feed->synchronise();
         }
         $this->_helper->getHelper('Cache')->removePagesTagged(array('allentries'));
-        $this->_helper->notifyHub(array('http://pubsubhubbub.appspot.com/'));
+        $this->_helper->notifyHub(array('http://pubsubhubbub.appspot.com'));
     }
 
 }

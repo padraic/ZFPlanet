@@ -10,7 +10,7 @@ bootstrap.path = APPLICATION_PATH "/BootstrapCli.php"
 bootstrap.class = "BootstrapCli"
 
 ; FrontController Resource Settings
-resources.frontController.actionHelperPaths.Zfplanet_Controller_Action_Helper = APPLICATION_PATH "/../modules/zfplanet/controllers/helpers"
+resources.frontController.actionHelperPaths.Zfplanet_Controller_Action_Helper = APPLICATION_PATH "/modules/zfplanet/controllers/helpers"
 
 ; Custom Caches
 resources.cacheManager.feed.frontend.name = "Core"
