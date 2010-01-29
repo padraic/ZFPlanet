@@ -22,6 +22,8 @@ are pieces of functionality yet to be added. It is not yet suitable to be used
 in production. It's presented here untagged and non-versioned as a demo app for
 Zend Framework 1.10. I'll switch its status to stable when its ready ;).
 
+Estimated status is ALPHA (feature complete but probably unstable).
+
 Prerequisites
 =============
 
@@ -62,9 +64,9 @@ contents of ./public/.htaccess to your Virtual Host configuration to gain some
 performance. No alternative is currently presented for web servers other than
 Apache 2 at this time.
 
-3. Copy or rename the two configuration files in ./application/configs to
-application.ini and cli.ini respectively. Note the presence of the following line
-in each:
+3. Copy or rename the three configuration files in ./application/configs to
+application.ini, cli.ini and http.ini respectively. Note the presence of the
+following line in application.ini:
 
     doctrine.connection_string = "mysql://username:password@127.0.0.1/databasename"
 
@@ -75,6 +77,11 @@ setting to reflect the hostname of your URI, for example:
 
 This is used to generate URIs for the application when the CLI tasks are running
 (since we cannot access $_SERVER['HTTP_HOST'] from the command line).
+
+There are three configurations for a simple reason. application.ini is a base
+configuration merged with one of http.ini or cli.ini depending on whether the
+application is accessed over HTTP or via the ./scripts/zf-cli script over the
+command line (e.g. with a cronjob).
     
 4. Create a new database (and optionally user). Edit the above configuration line
 in both configuration files to reflect these details. The initial protocol name
