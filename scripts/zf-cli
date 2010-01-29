@@ -41,7 +41,12 @@ if (!defined('APPLICATION_ENV')) {
 
 $application = new Zend_Application(
     APPLICATION_ENV,
-    APPLICATION_PATH . '/configs/cli.ini'
+    array(
+        'config' => array(
+            APPLICATION_PATH . '/configs/application.ini',
+            APPLICATION_PATH . '/configs/cli.ini'
+        )
+    )
 );
 
 $application->bootstrap()->run();

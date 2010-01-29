@@ -5,48 +5,12 @@
 ; off-server services or APIs. Just the host string is required.
 host = "example.com"
 
-; PHP Settings
-phpSettings.display_startup_errors = 0
-phpSettings.display_errors = 0
-
-; Include Paths
-includePaths.library = APPLICATION_PATH "/../library"
-
 ; Bootstrap File (HTTP)
 bootstrap.path = APPLICATION_PATH "/BootstrapCli.php"
 bootstrap.class = "BootstrapCli"
 
-; Default Application Resource Namespace
-appnamespace = "Zfplanet"
-
-; Autoloader Namespace Settings
-autoloaderNamespaces[] = "Doctrine"
-autoloaderNamespaces[] = "HTMLPurifier"
-autoloaderNamespaces[] = "ZFExt_"
-
 ; FrontController Resource Settings
-resources.frontController.defaultController = "index"
-resources.frontController.defaultAction = "index"
-resources.frontController.defaultModule = "zfplanet"
-resources.frontController.prefixDefaultModule = true
-resources.frontController.moduleDirectory = APPLICATION_PATH "/modules"
-resources.frontController.params.displayExceptions = 0
 resources.frontController.actionHelperPaths.Zfplanet_Controller_Action_Helper = APPLICATION_PATH "/../modules/zfplanet/controllers/helpers"
-
-; Doctrine Resource Settings
-doctrine.connection_string = "mysql://username:password@127.0.0.1/databasename"
-doctrine.data_fixtures_path = APPLICATION_PATH "/data/doctrine/fixtures"
-doctrine.models_path = APPLICATION_PATH "/modules/zfplanet/models"
-doctrine.migrations_path = APPLICATION_PATH "/data/doctrine/migrations"
-doctrine.sql_path = APPLICATION_PATH "/data/doctrine/sql"
-doctrine.yaml_schema_path = APPLICATION_PATH "/data/doctrine/schema"
-doctrine.generate_models_options.pearStyle = true
-doctrine.generate_models_options.baseClassesDirectory = null
-doctrine.generate_models_options.baseClassPrefix = "Base_"
-doctrine.generate_models_options.baseClassPrefixFiles = false
-doctrine.generate_models_options.classPrefix = "Zfplanet_Model_"
-doctrine.generate_models_options.classPrefixFiles = false
-doctrine.generate_models_options.generateTableClasses = true
 
 ; Custom Caches
 resources.cacheManager.feed.frontend.name = "Core"
@@ -54,16 +18,7 @@ resources.cacheManager.feed.backend.name = "File"
 resources.cacheManager.feed.frontend.options.automatic_serialization = true
 resources.cacheManager.feed.frontend.options.lifetime = 86400
 resources.cacheManager.feed.backend.options.cache_dir = APPLICATION_PATH "/../data/cache/feeds"
-resources.cacheManager.page.backend.options.public_dir = APPLICATION_PATH "/../public/cached"
-resources.cacheManager.pagetag.backend.options.cache_dir = APPLICATION_PATH "/../data/cache/tags"
 
 [staging : production]
-
 [testing : production]
-phpSettings.display_startup_errors = 1
-phpSettings.display_errors = 1
-
 [development : production]
-phpSettings.display_startup_errors = 1
-phpSettings.display_errors = 1
-resources.frontController.params.displayExceptions = 1

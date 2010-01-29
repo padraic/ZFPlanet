@@ -8,9 +8,10 @@ Purpose
 
 ZFPlanet is currently a demonstration project utilising pieces of Zend Framework
 1.10 specifically its newer Zend_Feed components including Zend_Feed_Reader,
-Zend_Feed_Writer and Zend_Feed_Pubsubhubbub. This allows it to server as a
-demonstration platform for individuals interested in seeing how all these pieces
-can be used in a single application.
+Zend_Feed_Writer, Zend_Feed_Pubsubhubbub, Zend_Cache_Manager, and
+Zend_Cache_Backend_Static. This allows it to serve as a demonstration platform
+for individuals interested in seeing how all these pieces can be used in a single
+application.
 
 Disclaimer
 ==========
@@ -25,8 +26,8 @@ Prerequisites
 =============
 
 The application is not packaged with the Zend Framework. Prior to use, you should
-ensure Zend Framework 1.10+ is available from your include_path. At the time of
-writing, 1.10 is not released as stable and therefore you are required to
+ensure Zend Framework 1.10.1 is available from your include_path. At the time of
+writing, 1.10.1 is not released as stable and therefore you are required to
 use the current Subversion HEAD of the standard trunk until a stable release is
 available. This ensures the application has access to as yet unreleased
 improvements.
@@ -56,6 +57,11 @@ to the user under which HTTP requests are served. For example:
 
     sudo chown -R www-data:www-data ./data
 
+If using a Virtual Host, if using this in production you may consider adding the
+contents of ./public/.htaccess to your Virtual Host configuration to gain some
+performance. No alternative is currently presented for web servers other than
+Apache 2 at this time.
+
 3. Copy or rename the two configuration files in ./application/configs to
 application.ini and cli.ini respectively. Note the presence of the following line
 in each:
@@ -68,7 +74,7 @@ setting to reflect the hostname of your URI, for example:
     host = "example.com"
 
 This is used to generate URIs for the application when the CLI tasks are running
-(since we cannot access $_SERVER['HTTP_HOST'] from the command line.
+(since we cannot access $_SERVER['HTTP_HOST'] from the command line).
     
 4. Create a new database (and optionally user). Edit the above configuration line
 in both configuration files to reflect these details. The initial protocol name
