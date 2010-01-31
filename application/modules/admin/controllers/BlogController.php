@@ -44,6 +44,7 @@ class Admin_BlogController extends Zend_Controller_Action
             }
             $feed->blogId = $blog->id;
             $feed->title = Zfplanet_Model_Feed::getHtmlPurifier()->purify($data->getTitle());
+            $feed->type = $this->_getFeedVersion($data->getType());
             $feed->isActive = 1;
             $feed->save();
             $this->_checkPubsubEnabled($data);
@@ -83,6 +84,21 @@ class Admin_BlogController extends Zend_Controller_Action
             $this->_helper->getHelper('Url')->simple(null, 'callback', 'zfplanet')
         );
         return rtrim($uri->getUri(), '/');
+    }
+    
+    protected function getFeedVersion($type) {
+        switch($type) {
+            case Zend_Feed_Reader::TYPE_RSS_20:
+                return 'RSS 2.0';
+            case Zend_Feed_Reader::TYPE_ATOM_10:
+                return 'Atom 1.0';
+            case Zend_Feed_Reader::TYPE_RSS_10:
+                return 'RSS 1.0';
+            case Zend_Feed_Reader::TYPE_ATOM_03:
+                return 'Atom 0.3';
+            default:
+                return 'RSS';
+        }
     }
 
 }

@@ -29,6 +29,8 @@ Feed:
             type: string(255)
         uri:
             type: string(255)
+        type:
+            type: string(8)
         isActive:
             type: integer(1)
         lastSynchronised:

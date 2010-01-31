@@ -9,6 +9,7 @@
  * @property integer $blogId
  * @property string $title
  * @property string $uri
+ * @property string $type
  * @property integer $isActive
  * @property timestamp $lastSynchronised
  * @property Zfplanet_Model_Blog $Blog
@@ -39,6 +40,10 @@ abstract class Zfplanet_Model_Base_Feed extends Doctrine_Record
         $this->hasColumn('uri', 'string', 255, array(
              'type' => 'string',
              'length' => '255',
+             ));
+        $this->hasColumn('type', 'string', 8, array(
+             'type' => 'string',
+             'length' => '8',
              ));
         $this->hasColumn('isActive', 'integer', 1, array(
              'type' => 'integer',
