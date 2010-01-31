@@ -1,5 +1,14 @@
 <?php
-
+/**
+ * This is very untidy, so to explain... We've enabled static file caching here
+ * so the feeds are saved as actual XML files served directly by Apache (see
+ * .htaccess). Apache should handle conditional GETs out of the box.
+ * The intention is to make this behaviour configurable (not done yet). If static
+ * caching disabled, the code below will always dynamically generate the feed,
+ * AND handle conditional GET requests also (saving us from actually generating
+ * the feed all the time - costing a single DB query to grab the latest
+ * dateModified value).
+ */
 class Zfplanet_FeedController extends Zend_Controller_Action
 {
 

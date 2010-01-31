@@ -9,9 +9,9 @@ class Zfplanet_View_Helper_ListBloggers extends Zend_View_Helper_Abstract
         if (count($bloggers) == 0) {
             return '<p>None found</p>';
         }
-        $out = '<ul class="list-bloggers">';
+        $out = '<ul class="xoxo blogroll">';
         foreach($bloggers as $blogger) {
-            $out .= '<li><a href="'
+            $out .= PHP_EOL . '<li><a href="'
                 . $this->view->escape($blogger->Feed->Blog->uri)
                 . '">'
                 . $this->view->escape($blogger->author)
