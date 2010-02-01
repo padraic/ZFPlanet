@@ -1,0 +1,6 @@
+[production]
+site.title = "ZFPlanet Blog Aggregator"
+
+[staging : production]
+[testing : production]
+[development : production]

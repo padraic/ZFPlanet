@@ -23,7 +23,8 @@ $application = new Zend_Application(
     array(
         'config' => array(
             APPLICATION_PATH . '/configs/application.ini',
-            APPLICATION_PATH . '/configs/http.ini'
+            APPLICATION_PATH . '/configs/http.ini',
+            APPLICATION_PATH . '/configs/site.ini'
         )
     )
 );
