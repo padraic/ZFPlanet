@@ -15,4 +15,8 @@
     <?= $this->shortenArticle($this->entry->content) ?>
 </div>
 <p><br/><a href="<?= $this->escape($this->entry->uri) ?>">Link to original article by
-<?= $this->escape($this->entry->author) ?></a></p>
+<?= $this->escape($this->entry->author) ?></a>
+<? if($this->siteInfo('sharethis_id')): ?>
+    | <?= $this->shareThis($this->siteInfo('sharethis_id'), $this->entry) ?>
+<? endif; ?>
+</p>

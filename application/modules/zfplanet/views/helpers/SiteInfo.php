@@ -14,8 +14,8 @@ class Zfplanet_View_Helper_SiteInfo extends Zend_View_Helper_Abstract
 
     public function siteInfo($name)
     {
-        if (isset($this->_data['title'])) {
-            return $this->_data['title'];
+        if (isset($this->_data[$name])) {
+            return $this->_data[$name];
         }
         return null;
     }
