@@ -3,7 +3,7 @@
 <head>
 <?= $this->headMeta()->setIndent('    ')
     ->prependHttpEquiv('Content-Style-Type', 'text/css'). "\n"; ?>
-<?= $this->headTitle('ZF Planet')
+<?= $this->headTitle($this->siteInfo('title'))
     ->setIndent('    ')->setSeparator(' / ') . "\n    "; ?>
 <?= $this->headScript()->prependFile(
     'http://html5shiv.googlecode.com/svn/trunk/html5.js',
@@ -16,6 +16,13 @@
     ->appendStylesheet($this->includeModifiedDate('/css/960.css'))
     ->appendStylesheet($this->includeModifiedDate('/css/text.css'))
     ->appendStylesheet($this->includeModifiedDate('/css/style.css')) . "\n"; ?>
+    <meta name="generator" content="ZFPlanet/0.1 +http://github.com/padraic/ZFPlanet"/>
+<? if($this->siteInfo('keywords')): ?>
+    <meta name="keywords" content="<?= $this->escape($this->siteInfo('keywords')) ?>"/>
+<? endif; ?>
+<? if($this->siteInfo('description')): ?>
+    <meta name="description" content="<?= $this->escape($this->siteInfo('description')) ?>"/>
+<? endif; ?>
     <link rel="alternate" type="application/atom+xml" href="http://zfplanet/feed/atom"/>
     <link rel="alternate" type="application/rss+xml" href="http://zfplanet/feed/rss"/>
     <link rel="profile" href="http://microformats.org/profile/hcard"/>

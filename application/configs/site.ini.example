@@ -4,6 +4,16 @@
 ; Please edit to whatever you wish.
 site.title = "ZFPlanet Blog Aggregator"
 
+; Site Keywords
+;
+; Space delimited list of keywords used in a meta tag
+site.keywords = "PHP weblog blog blogs aggregator rss atom pubsubhubbub"
+
+; Site Description
+;
+; Space description used in a meta tag
+site.description = "Collected entries from a group of bloggers."
+
 ; ShareThis Publisher ID
 ;
 ; You can get this from any generated Publisher button; see
