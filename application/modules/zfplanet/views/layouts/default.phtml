@@ -4,7 +4,7 @@
     <base href="<?= $this->baseUri() ?>">
 <?= $this->headMeta()->setIndent('    ')
     ->prependHttpEquiv('Content-Style-Type', 'text/css'). "\n"; ?>
-<?= $this->headTitle($this->siteInfo('title'))
+<?= $this->headTitle($this->escape($this->siteInfo('title')))
     ->setIndent('    ')->setSeparator(' / ') . "\n    "; ?>
 <?= $this->headScript()->prependFile(
     'http://html5shiv.googlecode.com/svn/trunk/html5.js',
