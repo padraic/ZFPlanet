@@ -3,6 +3,7 @@
         <a href="<?= $this->escape($this->entry->uri) ?>" rel="bookmark"><?= $this->escape($this->entry->title) ?></a>
     </h2>
     <small>Posted <time pubdate="pubdate" class="published updated"><?= $this->escape($this->entry->publishedDate) ?></time>
+        (about <?= $this->timeSince($this->entry->publishedDate) ?> ago)
         by <address class="vcard author">
                 <a href="<?= $this->escape($this->entry->Feed->Blog->uri) ?>" class="url fn">
                     <?= $this->escape($this->entry->author) ?>
