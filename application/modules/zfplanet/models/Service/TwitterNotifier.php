@@ -20,7 +20,7 @@ class Zfplanet_Model_Service_TwitterNotifier
         }
         $config = Zend_Controller_Front::getInstance()
             ->getParam('bootstrap')
-            ->getOption('twitter_oauth');
+            ->getOption('twitter');
         $this->_tclient = $accessToken->getHttpClient($config);
         $this->_tclient->setConfig(array('keepalive'=>true));
         $this->_tclient->setUri('http://twitter.com/statuses/update.json');

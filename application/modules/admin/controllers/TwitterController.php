@@ -9,7 +9,7 @@ class Admin_TwitterController extends Zend_Controller_Action
 
     public function init()
     {
-        $options = $this->getInvokeArg('bootstrap')->getOption('twitter_oauth');
+        $options = $this->getInvokeArg('bootstrap')->getOption('twitter');
         $options['callbackUrl'] = $this->_getCallbackUri();
         // workaround since INI config cannot define a NULL value :(
         $this->_helper->getHelper('Cache')->setTemplateOptions(

@@ -52,6 +52,13 @@ doctrine.generate_models_options.generateTableClasses = true
 resources.cacheManager.page.backend.options.public_dir = APPLICATION_PATH "/../public/cached"
 resources.cacheManager.pagetag.backend.options.cache_dir = APPLICATION_PATH "/../data/cache/tags"
 
+; Twitter OAuth Cache
+resources.cacheManager.twitter.frontend.name = "Core"
+resources.cacheManager.twitter.backend.name = "File"
+resources.cacheManager.twitter.frontend.options.automatic_serialization = true
+resources.cacheManager.twitter.frontend.options.automatic_cleaning_factor = 0
+resources.cacheManager.twitter.backend.options.cache_dir = APPLICATION_PATH "/../data/cache/twitter"
+
 [staging : production]
 
 [testing : production]
