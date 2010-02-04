@@ -36,9 +36,10 @@ class Zfplanet_CronController extends Zend_Controller_Action
             Zend_Feed_Reader::setCache($chelper->getCache('feed'));
             Zend_Feed_Reader::useHttpConditionalGet();
         }
+        $notifier = $this->_getTwitterNotification();
         foreach($feeds as $feed) {
+            if ($notifier->isEnabled()) $feed->setTwitterNotifier($notifier);
             $feed->synchronise();
-            $this->_doTwitterNotification($feed);
         }
         $this->_helper->getHelper('Cache')->removePagesTagged(array('allentries'));
         $this->_doPubsubhubbubNotification();
@@ -49,18 +50,13 @@ class Zfplanet_CronController extends Zend_Controller_Action
         $this->_helper->notifyHub(array('http://pubsubhubbub.appspot.com'));
     }
     
-    protected function _doTwitterNotification()
+    protected function _getTwitterNotifier()
     {
-        $tcache = $this->_helper->getHelper('Cache')->getCache('twitter');
-        if (($accessToken = $tcache->load('access-token'))) {
-            $config = $this->getInvokeArg('bootstrap')->getOption('twitter_oauth');
-            $tclient = $accessToken->getHttpClient($config);
-            $client->setUri('http://twitter.com/statuses/update.json');
-            $client->setMethod(Zend_Http_Client::POST);
-            $message = 
-            $client->setParameterPost('status', $statusMessage);
-            $response = $client->request();
-        }
+        $notifier = new Zfplanet_Model_Service_TwitterNotifier(
+            $this->getInvokeArg('bootstrap')->getOptions(),
+            $this->_helper->getHelper('Cache')->getCache('twitter');
+        );
+        return $notifier;
     }
 
 }

@@ -17,6 +17,11 @@ class Zfplanet_Model_Feed extends Zfplanet_Model_Base_Feed
     
     protected static $_htmlPurifier = null;
     
+    /**
+     * @var Zfplanet_Model_Service_TwitterNotifier
+     */
+    protected $_twitterNotifier = null;
+    
     public function setHttpClient(Zend_Http_Client $httpClient)
     {
         $this->_httpClient = $httpClient;
@@ -84,11 +89,24 @@ class Zfplanet_Model_Feed extends Zfplanet_Model_Base_Feed
                     ->get(Zend_Date::ISO_8601);
                 $newEntry->isActive = 1;
                 $newEntry->save();
+                if (($tnotifier = $this->_getTwitterNotifier())) {
+                    $tnotifier->notify($newEntry);
+                }
             }
         }
         } catch (Exception $e) {
             echo $e->getMessage(); exit;
         }
+    }
+    
+    public function setTwitterNotifier(Zfplanet_Model_Service_TwitterNotifier $notifier)
+    {
+        $this->_twitterNotifier = $notifier;
+    }
+    
+    public function getTwitterNotifier()
+    {
+        return $this->_twitterNotifier;
     }
     
     protected function _setCommonData(Zfplanet_Model_Entry $model,

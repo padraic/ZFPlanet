@@ -9,31 +9,21 @@ class Zfplanet_Model_Service_TwitterNotifier
     
     protected $_enabled = false;
     
-    public function __construct()
+    public function __construct(array $config, Zend_Cache_Core $cache)
     {
-        $tcache = Zend_Controller_Front::getInstance()
-            ->getParam('bootstrap')
-            ->getResource('Cachemanager')
-            ->getCache('twitter');
-        if (!($accessToken = $tcache->load('access-token'))) {
+        if (!($accessToken = $cache->load('access-token'))) {
             return;
         }
-        $config = Zend_Controller_Front::getInstance()
-            ->getParam('bootstrap')
-            ->getOption('twitter');
-        $this->_tclient = $accessToken->getHttpClient($config);
+        $this->_tclient = $accessToken->getHttpClient($config['twitter']);
         $this->_tclient->setConfig(array('keepalive'=>true));
         $this->_tclient->setUri('http://twitter.com/statuses/update.json');
         $this->_tclient->setMethod(Zend_Http_Client::POST);
-        $config = Zend_Controller_Front::getInstance()
-            ->getParam('bootstrap')
-            ->getOption('bitly');
         $this->_bclient = new Zend_Http_Client(array('keepalive'=>true));
         $this->_bclient->setUri('http://api.bit.ly/shorten');
         $this->_bclient->setMethod(Zend_Http_Client::GET);
         $this->_bclient->setParameterGet('version', '2.0.1');
-        $this->_bclient->setParameterGet('login', $config['login']);
-        $this->_bclient->setParameterGet('apiKey', $config['apiKey']);
+        $this->_bclient->setParameterGet('login', $config['bitly']['login']);
+        $this->_bclient->setParameterGet('apiKey', $config['bitly']['apiKey']);
     }
     
     public function notify(Zfplanet_Model_Entry $entry)
@@ -47,6 +37,11 @@ class Zfplanet_Model_Service_TwitterNotifier
             substr($entry->title, 0, (139-strlen($tlink))) . ' ' . $tlink
         );
         $this->_tclient->request();
+    }
+    
+    public function isEnabled()
+    {
+        return $this->_enabled;
     }
     
     protected function _shortenLink($uri)

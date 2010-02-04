@@ -40,12 +40,26 @@ class Zfplanet_CallbackController extends Zend_Controller_Action
         unlink($path);
         $feedModel = Doctrine_Core::getTable('Zfplanet_Model_Feed')->find($feed->getId());
         if ($feedModel) {
+            $notifier = $this->_getTwitterNotification();
+            if ($notifier->isEnabled()) $feedModel->setTwitterNotifier($notifier);
             $feedModel->synchronise($feed);
             $this->_helper->getHelper('Cache')->removePagesTagged(array('allentries'));
             $this->_helper->notifyHub(array('http://pubsubhubbub.appspot.com/'));
         } else {
             throw new Exception('Unable to parse feed containing: ' . $data);
         }
+    }
+    
+    /**
+     * Duplicated in TwitterController of Admin Module - refactor to action helper TODO
+     */
+    protected function _getTwitterNotifier()
+    {
+        $notifier = new Zfplanet_Model_Service_TwitterNotifier(
+            $this->getInvokeArg('bootstrap')->getOptions(),
+            $this->_helper->getHelper('Cache')->getCache('twitter');
+        );
+        return $notifier;
     }
 
 
