@@ -33,16 +33,34 @@ class Zfplanet_CronController extends Zend_Controller_Action
         }
         $chelper = $this->_helper->getHelper('Cache');
         if ($chelper->hasCache('feed')) {
-            // configured for refreshing cached content at maximum
-            // 1 week intervals by default (see cli.ini)
             Zend_Feed_Reader::setCache($chelper->getCache('feed'));
             Zend_Feed_Reader::useHttpConditionalGet();
         }
         foreach($feeds as $feed) {
             $feed->synchronise();
+            $this->_doTwitterNotification($feed);
         }
         $this->_helper->getHelper('Cache')->removePagesTagged(array('allentries'));
+        $this->_doPubsubhubbubNotification();
+    }
+    
+    protected function _doPubsubhubbubNotification()
+    {
         $this->_helper->notifyHub(array('http://pubsubhubbub.appspot.com'));
+    }
+    
+    protected function _doTwitterNotification()
+    {
+        $tcache = $this->_helper->getHelper('Cache')->getCache('twitter');
+        if (($accessToken = $tcache->load('access-token'))) {
+            $config = $this->getInvokeArg('bootstrap')->getOption('twitter_oauth');
+            $tclient = $accessToken->getHttpClient($config);
+            $client->setUri('http://twitter.com/statuses/update.json');
+            $client->setMethod(Zend_Http_Client::POST);
+            $message = 
+            $client->setParameterPost('status', $statusMessage);
+            $response = $client->request();
+        }
     }
 
 }
