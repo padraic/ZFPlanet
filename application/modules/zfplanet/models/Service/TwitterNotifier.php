@@ -11,9 +11,10 @@ class Zfplanet_Model_Service_TwitterNotifier
     
     public function __construct(array $config, Zend_Cache_Core $cache)
     {
-        if (!($accessToken = $cache->load('access-token'))) {
+        if (!($accessToken = $cache->load('accesstoken'))) {
             return;
         }
+        $this->_enabled = true;
         $this->_tclient = $accessToken->getHttpClient($config['twitter']);
         $this->_tclient->setConfig(array('keepalive'=>true));
         $this->_tclient->setUri('http://twitter.com/statuses/update.json');

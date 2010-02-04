@@ -22,9 +22,9 @@ class Admin_TwitterController extends Zend_Controller_Action
 
     public function associateAction()
     {
-        if (!$this->_cache->load('access-token')) {
+        if (!$this->_cache->load('accesstoken')) {
             $requestToken = $this->_consumer->getRequestToken();
-            $this->_cache->save($requestToken, 'request-token');
+            $this->_cache->save($requestToken, 'requesttoken');
             $redirect = $this->_consumer->getRedirectUrl();
             $this->_redirect($redirectUrl);
         }
@@ -32,10 +32,10 @@ class Admin_TwitterController extends Zend_Controller_Action
     
     public function callbackAction()
     {
-        if (!empty($_GET) && ($requestToken = $this->_cache->load('request-token'))) {
+        if (!empty($_GET) && ($requestToken = $this->_cache->load('requesttoken'))) {
             $accessToken = $this->_consumer->getAccessToken($_GET, $requestToken);
-            $this->_cache->remove('request-token');
-            $this->_cache->save($accessToken, 'access-token');
+            $this->_cache->remove('requesttoken');
+            $this->_cache->save($accessToken, 'accesstoken');
         } else {
             $this->_redirect('/');
         }
