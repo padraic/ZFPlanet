@@ -54,7 +54,7 @@ class Zfplanet_CronController extends Zend_Controller_Action
     {
         $notifier = new Zfplanet_Model_Service_TwitterNotifier(
             $this->getInvokeArg('bootstrap')->getOptions(),
-            $this->_helper->getHelper('Cache')->getCache('twitter');
+            $this->_helper->getHelper('Cache')->getCache('twitter')
         );
         return $notifier;
     }
