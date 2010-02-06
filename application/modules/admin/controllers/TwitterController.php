@@ -26,7 +26,7 @@ class Admin_TwitterController extends Zend_Controller_Action
             $requestToken = $this->_consumer->getRequestToken();
             $this->_cache->save($requestToken, 'requesttoken');
             $redirect = $this->_consumer->getRedirectUrl();
-            $this->_redirect($redirectUrl);
+            $this->_redirect($redirect);
         }
     }
     
@@ -46,7 +46,7 @@ class Admin_TwitterController extends Zend_Controller_Action
         $uri = Zend_Uri::factory('http');
         $uri->setHost($_SERVER['HTTP_HOST']);
         $uri->setPath(
-            $this->_helper->getHelper('Url')->simple('twitter', 'callback', 'admin')
+            $this->_helper->getHelper('Url')->simple('callback', 'twitter', 'admin')
         );
         return rtrim($uri->getUri(), '/');
     }
