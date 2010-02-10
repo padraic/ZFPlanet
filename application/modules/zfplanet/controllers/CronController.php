@@ -44,8 +44,14 @@ class Zfplanet_CronController extends Zend_Controller_Action
             }
             $this->_helper->getHelper('Cache')->removePagesTagged(array('allentries'));
             $this->_doPubsubhubbubNotification();
+            echo 'Polling completed without error', PHP_EOL;
         } catch (Exception $e) {
-            var_dump($e);
+            $logger = $this->getInvokeArg('bootstrap')->getResource('ErrorLog');
+            $message = 'Error/Exception encountered: ' . get_class($e) . ': '
+                . $e->getMessage() . PHP_EOL
+                . 'Stack Trace: ' . PHP_EOL . $e->getTraceAsString();
+            $logger->log($message, Zend_Log::ERR);
+            echo $message;
         }
     }
     

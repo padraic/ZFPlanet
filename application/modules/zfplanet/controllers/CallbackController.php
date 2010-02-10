@@ -30,23 +30,31 @@ class Zfplanet_CallbackController extends Zend_Controller_Action
         if (!$this->getRequest() instanceof ZFExt_Controller_Request_Cli) {
             throw new Exception('Access denied from HTTP');
         }
-        $this->getInvokeArg('bootstrap')->addOptionRules(
-            array('key|k=s' => 'File keyname for task data (required)')
-        );
-        $options = $this->getInvokeArg('bootstrap')->getGetOpt();
-        $path = APPLICATION_PATH . '/../data/tmp/' . $options->key;
-        $data = file_get_contents($path);
-        $feed = Zend_Feed_Reader::importString($data);
-        unlink($path);
-        $feedModel = Doctrine_Core::getTable('Zfplanet_Model_Feed')->find($feed->getId());
-        if ($feedModel) {
-            $notifier = $this->_getTwitterNotification();
-            if ($notifier->isEnabled()) $feedModel->setTwitterNotifier($notifier);
-            $feedModel->synchronise($feed);
-            $this->_helper->getHelper('Cache')->removePagesTagged(array('allentries'));
-            $this->_helper->notifyHub(array('http://pubsubhubbub.appspot.com/'));
-        } else {
-            throw new Exception('Unable to parse feed containing: ' . $data);
+        try {
+            $this->getInvokeArg('bootstrap')->addOptionRules(
+                array('key|k=s' => 'File keyname for task data (required)')
+            );
+            $options = $this->getInvokeArg('bootstrap')->getGetOpt();
+            $path = APPLICATION_PATH . '/../data/tmp/' . $options->key;
+            $data = file_get_contents($path);
+            $feed = Zend_Feed_Reader::importString($data);
+            unlink($path);
+            $feedModel = Doctrine_Core::getTable('Zfplanet_Model_Feed')->find($feed->getId());
+            if ($feedModel) {
+                $notifier = $this->_getTwitterNotification();
+                if ($notifier->isEnabled()) $feedModel->setTwitterNotifier($notifier);
+                $feedModel->synchronise($feed);
+                $this->_helper->getHelper('Cache')->removePagesTagged(array('allentries'));
+                $this->_helper->notifyHub(array('http://pubsubhubbub.appspot.com/'));
+            } else {
+                throw new Exception('Feed being processed does not match a known feed ID');
+            }
+        } catch (Exception $e) {
+            $logger = $this->getInvokeArg('bootstrap')->getResource('ErrorLog');
+            $message = 'Error/Exception encountered: ' . get_class($e) . ': '
+                . $e->getMessage() . PHP_EOL
+                . 'Stack Trace: ' . PHP_EOL . $e->getTraceAsString();
+            $logger->log($message, Zend_Log::ERR);
         }
     }
     

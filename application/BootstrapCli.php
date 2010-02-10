@@ -52,6 +52,13 @@ class BootstrapCli extends Zend_Application_Bootstrap_Bootstrap
         return $manager;
     }
     
+    protected function _initErrorLog()
+    {
+        $writer = new Zend_Log_Writer_Stream(APPLICATION_PATH . '/../data/log/feedsync.log');
+        $log = new Zend_Log($writer);
+        return $log;
+    }
+    
     protected function _initHtmlPurifier()
     {
         if (!defined('HTMLPURIFIER_PREFIX')) {
