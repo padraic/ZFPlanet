@@ -1,6 +1,9 @@
 /**
  * Basic Elements
  */
+body {
+    background-color: #eeebe2;
+}
 a:link, a:visited {
     color: blue;
     text-decoration: none;
@@ -20,20 +23,16 @@ header#header {
 }
 
 /**
- * Article Wrapping Styling
- */
-
-/**
  * Article Styling
  */
 section#content article {
     margin-bottom: 20px;
 }
 article.even {
-    background-color: #ffffff;
+    background-color: #dcdcdc;
 }
 article.odd {
-    background-color: #dcdcdc;
+    background-color: #ffffff;
 }
 article{
     padding: 0 5px 0 5px;
@@ -52,6 +51,9 @@ header.article-header {
 }
 header.article-header small {
     font-size: 80%;
+}
+p, pre, ol, ul, h1, h2, h3, h4, h5, h6, table, blockquote {
+    margin-bottom: 1em;
 }
 p.truncated {
     margin-top: 0;
