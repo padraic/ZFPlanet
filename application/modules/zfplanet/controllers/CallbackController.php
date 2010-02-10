@@ -43,6 +43,7 @@ class Zfplanet_CallbackController extends Zend_Controller_Action
             if ($feedModel) {
                 $notifier = $this->_getTwitterNotification();
                 if ($notifier->isEnabled()) $feedModel->setTwitterNotifier($notifier);
+                $feedModel->setLuceneIndexer($this->_getLuceneIndexer());
                 $feedModel->synchronise($feed);
                 $this->_helper->getHelper('Cache')->removePagesTagged(array('allentries'));
                 $this->_helper->notifyHub(array('http://pubsubhubbub.appspot.com/'));
@@ -68,6 +69,14 @@ class Zfplanet_CallbackController extends Zend_Controller_Action
             $this->_helper->getHelper('Cache')->getCache('twitter')
         );
         return $notifier;
+    }
+    
+    protected function _getLuceneIndexer()
+    {
+        $index = new Zfplanet_Model_Service_LuceneIndexer(
+            $this->getInvokeArg('bootstrap')->getOptions()
+        );
+        return $index;
     }
 
 

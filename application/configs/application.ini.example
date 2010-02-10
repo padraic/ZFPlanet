@@ -59,6 +59,9 @@ resources.cacheManager.twitter.frontend.options.automatic_serialization = true
 resources.cacheManager.twitter.frontend.options.automatic_cleaning_factor = 0
 resources.cacheManager.twitter.backend.options.cache_dir = APPLICATION_PATH "/../data/cache/twitter"
 
+; Lucene Search Index
+search.indexPath = APPLICATION_PATH "/../data/search"
+
 [staging : production]
 
 [testing : production]

@@ -40,6 +40,7 @@ class Zfplanet_CronController extends Zend_Controller_Action
             $notifier = $this->_getTwitterNotifier();
             foreach($feeds as $feed) {
                 if ($notifier->isEnabled()) $feed->setTwitterNotifier($notifier);
+                $feed->setLuceneIndexer($this->_getLuceneIndexer());
                 $feed->synchronise();
             }
             $this->_helper->getHelper('Cache')->removePagesTagged(array('allentries'));
@@ -67,6 +68,14 @@ class Zfplanet_CronController extends Zend_Controller_Action
             $this->_helper->getHelper('Cache')->getCache('twitter')
         );
         return $notifier;
+    }
+    
+    protected function _getLuceneIndexer()
+    {
+        $index = new Zfplanet_Model_Service_LuceneIndexer(
+            $this->getInvokeArg('bootstrap')->getOptions()
+        );
+        return $index;
     }
 
 }

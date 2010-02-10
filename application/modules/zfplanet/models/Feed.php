@@ -22,6 +22,11 @@ class Zfplanet_Model_Feed extends Zfplanet_Model_Base_Feed
      */
     protected $_twitterNotifier = null;
     
+    /**
+     * @var Zfplanet_Model_Service_LuceneIndexer
+     */
+    protected $_luceneIndexer = null;
+    
     public function setHttpClient(Zend_Http_Client $httpClient)
     {
         $this->_httpClient = $httpClient;
@@ -78,6 +83,9 @@ class Zfplanet_Model_Feed extends Zfplanet_Model_Base_Feed
             } elseif ($currentEntry) {
                 $this->_setCommonData($currentEntry, $entry, $entryHash);
                 $currentEntry->save();
+                if (($lindexer = $this->getLuceneIndexer())) {
+                    $lindexer->index($currentEntry);
+                }
             } else {
                 $newEntry = new Zfplanet_Model_Entry;
                 $newEntry->id = $entry->getId();
@@ -91,6 +99,9 @@ class Zfplanet_Model_Feed extends Zfplanet_Model_Base_Feed
                 if (($tnotifier = $this->getTwitterNotifier())) {
                     $tnotifier->notify($newEntry);
                 }
+                if (($lindexer = $this->getLuceneIndexer())) {
+                    $lindexer->index($newEntry);
+                }
             }
         }
     }
@@ -103,6 +114,16 @@ class Zfplanet_Model_Feed extends Zfplanet_Model_Base_Feed
     public function getTwitterNotifier()
     {
         return $this->_twitterNotifier;
+    }
+    
+    public function setLuceneIndexer(Zfplanet_Model_Service_LuceneIndexer $index)
+    {
+        $this->_luceneIndexer = $index;
+    }
+    
+    public function getLuceneIndexer()
+    {
+        return $this->_luceneIndexer;
     }
     
     protected function _setCommonData(Zfplanet_Model_Entry $model,
