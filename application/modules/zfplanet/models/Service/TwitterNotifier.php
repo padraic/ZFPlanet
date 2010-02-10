@@ -9,6 +9,12 @@ class Zfplanet_Model_Service_TwitterNotifier
     
     protected $_enabled = false;
     
+    /**
+     * Constructor
+     *
+     * The config array requires two keys, "twitter" and (optionally) "bitly",
+     * each containing the necessary values as shown below.
+     */
     public function __construct(array $config, Zend_Cache_Core $cache)
     {
         if (!($accessToken = $cache->load('accesstoken'))) {
@@ -19,12 +25,14 @@ class Zfplanet_Model_Service_TwitterNotifier
         $this->_tclient->setConfig(array('keepalive'=>true));
         $this->_tclient->setUri('http://twitter.com/statuses/update.json');
         $this->_tclient->setMethod(Zend_Http_Client::POST);
-        $this->_bclient = new Zend_Http_Client(array('keepalive'=>true));
-        $this->_bclient->setUri('http://api.bit.ly/shorten');
-        $this->_bclient->setMethod(Zend_Http_Client::GET);
-        $this->_bclient->setParameterGet('version', '2.0.1');
-        $this->_bclient->setParameterGet('login', $config['bitly']['login']);
-        $this->_bclient->setParameterGet('apiKey', $config['bitly']['apiKey']);
+        if (isset($config['bitly'])) {
+            $this->_bclient = new Zend_Http_Client(null, array('keepalive'=>true));
+            $this->_bclient->setUri('http://api.bit.ly/shorten');
+            $this->_bclient->setMethod(Zend_Http_Client::GET);
+            $this->_bclient->setParameterGet('version', '2.0.1');
+            $this->_bclient->setParameterGet('login', $config['bitly']['login']);
+            $this->_bclient->setParameterGet('apiKey', $config['bitly']['apiKey']);
+        }
     }
     
     public function notify(Zfplanet_Model_Entry $entry)
@@ -47,11 +55,12 @@ class Zfplanet_Model_Service_TwitterNotifier
     
     protected function _shortenLink($uri)
     {
+        if (is_null($this->_bclient)) return $uri;
         $json = $this->_bclient
             ->setParameterGet('longUrl', $uri)
-            ->request();
+            ->request()->getBody();
         $result = Zend_Json::decode($json);
-        if ($result['errorCode']) {
+        if ($result['errorCode'] > 0) {
             return $uri;
         }
         return $result['results'][$uri]['shortUrl'];

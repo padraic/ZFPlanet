@@ -54,7 +54,6 @@ class Zfplanet_Model_Feed extends Zfplanet_Model_Base_Feed
 
     public function synchronise(Zend_Feed_Reader_FeedAbstract $feed = null)
     {
-        try {
         if (is_null($feed)) {
             Zend_Feed_Reader::setHttpClient($this->getHttpClient());
             $feed = Zend_Feed_Reader::import($this->uri);
@@ -89,13 +88,10 @@ class Zfplanet_Model_Feed extends Zfplanet_Model_Base_Feed
                     ->get(Zend_Date::ISO_8601);
                 $newEntry->isActive = 1;
                 $newEntry->save();
-                if (($tnotifier = $this->_getTwitterNotifier())) {
+                if (($tnotifier = $this->getTwitterNotifier())) {
                     $tnotifier->notify($newEntry);
                 }
             }
-        }
-        } catch (Exception $e) {
-            echo $e->getMessage(); exit;
         }
     }
     

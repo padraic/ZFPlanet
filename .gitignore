@@ -9,3 +9,4 @@ data/cache/twitter/zend*
 public/cached/page/*
 public/cached/feed/*
 public/cached/*.html
+data/log/*

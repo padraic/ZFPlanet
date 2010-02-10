@@ -21,28 +21,32 @@ class Zfplanet_CronController extends Zend_Controller_Action
      */
     public function pollAction()
     {
-        $feeds = Doctrine_Query::create()
-            ->from('Zfplanet_Model_Feed f')
-            ->where(
-                'f.uri NOT IN (SELECT s.topic_url FROM Zfplanet_Model_Subscription s'
-                . ' WHERE s.subscription_state = ?)',
-                Zend_Feed_Pubsubhubbub::SUBSCRIPTION_VERIFIED)
-            ->execute();
-        if (!$feeds) {
-            return;
+        try {
+            $feeds = Doctrine_Query::create()
+                ->from('Zfplanet_Model_Feed f')
+                ->where(
+                    'f.uri NOT IN (SELECT s.topic_url FROM Zfplanet_Model_Subscription s'
+                    . ' WHERE s.subscription_state = ?)',
+                    Zend_Feed_Pubsubhubbub::SUBSCRIPTION_VERIFIED)
+                ->execute();
+            if (!$feeds) {
+                return;
+            }
+            $chelper = $this->_helper->getHelper('Cache');
+            if ($chelper->hasCache('feed')) {
+                Zend_Feed_Reader::setCache($chelper->getCache('feed'));
+                Zend_Feed_Reader::useHttpConditionalGet();
+            }
+            $notifier = $this->_getTwitterNotifier();
+            foreach($feeds as $feed) {
+                if ($notifier->isEnabled()) $feed->setTwitterNotifier($notifier);
+                $feed->synchronise();
+            }
+            $this->_helper->getHelper('Cache')->removePagesTagged(array('allentries'));
+            $this->_doPubsubhubbubNotification();
+        } catch (Exception $e) {
+            var_dump($e);
         }
-        $chelper = $this->_helper->getHelper('Cache');
-        if ($chelper->hasCache('feed')) {
-            Zend_Feed_Reader::setCache($chelper->getCache('feed'));
-            Zend_Feed_Reader::useHttpConditionalGet();
-        }
-        $notifier = $this->_getTwitterNotification();
-        foreach($feeds as $feed) {
-            if ($notifier->isEnabled()) $feed->setTwitterNotifier($notifier);
-            $feed->synchronise();
-        }
-        $this->_helper->getHelper('Cache')->removePagesTagged(array('allentries'));
-        $this->_doPubsubhubbubNotification();
     }
     
     protected function _doPubsubhubbubNotification()

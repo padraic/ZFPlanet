@@ -7,6 +7,10 @@ class Admin_BlogController extends Zend_Controller_Action
     {
         $form = new Admin_Form_AddBlog;
         $this->view->addBlogForm = $form;
+        $flashMessenger = $this->_helper->getHelper('FlashMessenger');
+        if ($flashMessenger->hasMessages()) {
+            $this->view->messages = $flashMessenger->getMessages();
+        }
     }
     
     public function editAction()
@@ -17,44 +21,49 @@ class Admin_BlogController extends Zend_Controller_Action
     public function processAction()
     {
         $form = new Admin_Form_AddBlog;
-        $this->view->success = true;
         if (!$this->getRequest()->isPost()) {
             return $this->_forward('admin/index');
         }
+        $flashMessenger = $this->_helper->getHelper('FlashMessenger');
         if (!$form->isValid($_POST)) {
-            $this->view->success = false;
-            $this->view->addBlogForm = $form;
+            $flashMessenger->addMessage('Form data invalid: recheck details and try again.');
+            $flashMessenger->addMessage('error');
+            $this->_redirect('/admin/blog/create');
         }
         $values = $form->getValues();
-        //try {
-            $blog = new Zfplanet_Model_Blog;
-            $blog->contactName = $values['contactName'];
-            if (isset($values['contactEmail'])) {
-                $blog->contactEmail = $values['contactEmail'];
-            }
-            $blog->uri = $values['uri'];
+
+        $blog = new Zfplanet_Model_Blog;
+        $blog->contactName = $values['contactName'];
+        if (isset($values['contactEmail'])) {
+            $blog->contactEmail = $values['contactEmail'];
+        }
+        $blog->uri = $values['uri'];
+        try {
             $data = Zend_Feed_Reader::import($values['feedUri']);
-            $blog->feedId = $data->getId();
-            $blog->save();
-            $feed = new Zfplanet_Model_Feed;
-            $feed->id = $data->getId();
-            $feed->uri = $data->getFeedLink();
-            if (isset($feed->uri)) {
-                $feed->uri = $values['feedUri'];
-            }
-            $feed->blogId = $blog->id;
-            $feed->title = Zfplanet_Model_Feed::getHtmlPurifier()->purify($data->getTitle());
-            $feed->type = $this->_getFeedVersion($data->getType());
-            $feed->isActive = 1;
-            $feed->save();
-            $this->_checkPubsubEnabled($data);
-            $blog->save();
-            $feed->save();
-            $this->_redirect('/admin');
-        //} catch (Exception $e) {
-            //$this->view->success = false;
-            //$this->view->addBlogForm = $form;
-        //}
+        } catch (Exception $e) {
+            $flashMessenger->addMessage('Problem fetching feed: ' . $e->getMessage());
+            $flashMessenger->addMessage('error');
+            $this->_redirect('/admin/blog/create');
+        }
+        $blog->feedId = $data->getId();
+        $blog->save();
+        $feed = new Zfplanet_Model_Feed;
+        $feed->id = $data->getId();
+        $feed->uri = $data->getFeedLink();
+        if (isset($feed->uri)) {
+            $feed->uri = $values['feedUri'];
+        }
+        $feed->blogId = $blog->id;
+        $feed->title = Zfplanet_Model_Feed::getHtmlPurifier()->purify($data->getTitle());
+        $feed->type = $this->_getFeedVersion($data->getType());
+        $feed->isActive = 1;
+        $feed->save();
+        $this->_checkPubsubEnabled($data);
+        $blog->save();
+        $feed->save();
+        $flashMessenger->addMessage('Blog successfully added!');
+        $flashMessenger->addMessage('success');
+        $this->_redirect('/admin/blog/create');
     }
     
     protected function _checkPubsubEnabled(Zend_Feed_Reader_FeedAbstract $feed)
@@ -71,9 +80,7 @@ class Admin_BlogController extends Zend_Controller_Action
         $sub->setCallbackUrl(
             $this->_getCallbackUri()
         );
-        //try {
-            $sub->subscribeAll();
-        //} catch (Exception $e) {/*do something about failures later*/}
+        $sub->subscribeAll();
     }
     
     protected function _getCallbackUri()
@@ -86,7 +93,7 @@ class Admin_BlogController extends Zend_Controller_Action
         return rtrim($uri->getUri(), '/');
     }
     
-    protected function getFeedVersion($type) {
+    protected function _getFeedVersion($type) {
         switch($type) {
             case Zend_Feed_Reader::TYPE_RSS_20:
                 return 'RSS 2.0';
