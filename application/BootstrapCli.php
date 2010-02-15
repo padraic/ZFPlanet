@@ -54,6 +54,9 @@ class BootstrapCli extends Zend_Application_Bootstrap_Bootstrap
     
     protected function _initErrorLog()
     {
+        if (!file_exists(APPLICATION_PATH . '/../data/log/feedsync.log')) {
+            return;
+        }
         $writer = new Zend_Log_Writer_Stream(APPLICATION_PATH . '/../data/log/feedsync.log');
         $log = new Zend_Log($writer);
         return $log;

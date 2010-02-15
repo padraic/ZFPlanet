@@ -7,7 +7,11 @@ class Zfplanet_Model_Service_LuceneIndexer
 
     public function __construct(array $config) {
         if (isset($config['search'])) {
-            $this->_index = Zend_Search_Lucene::create($config['search']['indexPath']);
+            try {
+                $this->_index = Zend_Search_Lucene::open($config['search']['indexPath']);
+            } catch (Zend_Search_Lucene_Exception $e) {
+                $this->_index = Zend_Search_Lucene::create($config['search']['indexPath']);
+            }
         }
     }
     

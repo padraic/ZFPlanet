@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Require for Doctrine Autoloader
+ */
+require_once 'Doctrine.php';
+
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 
@@ -46,8 +51,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     protected function _initDoctrine()
     {
         $autoloader = Zend_Loader_Autoloader::getInstance();
-        $autoloader->registerNamespace('sfYaml')
-            ->pushAutoloader(array('Doctrine', 'autoload'), 'sfYaml');
+        $autoloader->registerNamespace(array('Doctrine', 'sfYaml'))
+            ->pushAutoloader(array('Doctrine', 'autoload'), array('Doctrine', 'sfYaml'));
         $doctrineConfig = $this->getOption('doctrine');
         $manager = Doctrine_Manager::getInstance();
         $manager->setAttribute(Doctrine_Core::ATTR_AUTO_ACCESSOR_OVERRIDE, true);
@@ -74,6 +79,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     
     protected function _initErrorLog()
     {
+        /**
+         * Initial creation of log - may seem unnecessary, but auto-creation
+         * may allow a CLI script (with differing perms) do it instead. This
+         * would cause write errors for the web fronted app.
+         */
+        if (!file_exists(APPLICATION_PATH . '/../data/log/feedsync.log')) {
+            fopen(APPLICATION_PATH . '/../data/log/feedsync.log', 'a');
+            chmod(APPLICATION_PATH . '/../data/log/feedsync.log', 0600);
+        }
         $writer = new Zend_Log_Writer_Stream(APPLICATION_PATH . '/../data/log/feedsync.log');
         $log = new Zend_Log($writer);
         return $log;

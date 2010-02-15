@@ -40,10 +40,24 @@
 
         <div id="content-wrapper" class="container_12">
             <div id="content" class="hfeed grid_9" role="main">
-                <?php echo $this->layout()->content ?>
+                <?= $this->layout()->content ?>
             </div>
 
             <div id="sideinfo" class="grid_3">
+            
+                <aside class="sideinfo">
+                    <header>
+                        <h3>Search</h3>
+                    </header>
+                    <form action="/search"
+                        accept-charset="UTF-8"
+                        method="post"
+                        enctype="application/x-www-form-urlencoded"
+                        style="padding-bottom: 5px;">
+                        <input type="search" name="search" placeholder="Search articles" maxlength="200" size="17"/>
+                        <input type="submit" value="Go"/>
+                    </form>
+                </aside>
 
                 <aside class="sideinfo">
                     <header>
