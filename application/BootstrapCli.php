@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Require for Doctrine Autoloader
+ */
+require_once 'Doctrine.php';
+
 class BootstrapCli extends Zend_Application_Bootstrap_Bootstrap
 {
 
@@ -33,8 +38,8 @@ class BootstrapCli extends Zend_Application_Bootstrap_Bootstrap
     protected function _initDoctrine()
     {
         $autoloader = Zend_Loader_Autoloader::getInstance();
-        $autoloader->registerNamespace('sfYaml')
-            ->pushAutoloader(array('Doctrine', 'autoload'), 'sfYaml');
+        $autoloader->registerNamespace(array('Doctrine', 'sfYaml'))
+            ->pushAutoloader(array('Doctrine', 'autoload'), array('Doctrine', 'sfYaml'));
         $doctrineConfig = $this->getOption('doctrine');
         $manager = Doctrine_Manager::getInstance();
         $manager->setAttribute(Doctrine_Core::ATTR_AUTO_ACCESSOR_OVERRIDE, true);

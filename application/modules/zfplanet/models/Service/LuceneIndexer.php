@@ -21,27 +21,27 @@ class Zfplanet_Model_Service_LuceneIndexer
         $doc = new Zend_Search_Lucene_Document;
         $doc->addField(
             Zend_Search_Lucene_Field::UnIndexed(
-                'id', $entry->id
+                'id', $entry->id, 'utf-8'
             )
         );
         $doc->addField(
             Zend_Search_Lucene_Field::UnIndexed(
-                'publishedDate', $entry->publishedDate
+                'publishedDate', $entry->publishedDate, 'utf-8'
             )
         );
         $doc->addField(
             Zend_Search_Lucene_Field::Keyword(
-                'uri', $entry->uri
+                'uri', $entry->uri, 'utf-8'
             )
         );
         $doc->addField(
             Zend_Search_Lucene_Field::Text(
-                'title', $entry->title
+                'title', $entry->title, 'utf-8'
             )
         );
         $doc->addField(
             Zend_Search_Lucene_Field::UnStored(
-                'content', $entry->content
+                'content', $entry->content, 'utf-8'
             )
         );
         $this->_index->addDocument($doc);
