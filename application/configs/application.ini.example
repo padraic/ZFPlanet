@@ -15,7 +15,6 @@ bootstrap.class = "Bootstrap"
 appnamespace = "Zfplanet"
 
 ; Autoloader Namespace Settings
-autoloaderNamespaces[] = "Doctrine"
 autoloaderNamespaces[] = "HTMLPurifier"
 autoloaderNamespaces[] = "ZFExt_"
 
