@@ -96,8 +96,12 @@ class Zfplanet_Model_Feed extends Zfplanet_Model_Base_Feed
                     ->get(Zend_Date::ISO_8601);
                 $newEntry->isActive = 1;
                 $newEntry->save();
-                if (($tnotifier = $this->getTwitterNotifier())) {
-                    $tnotifier->notify($newEntry);
+                try {
+                    if (($tnotifier = $this->getTwitterNotifier())) {
+                        $tnotifier->notify($newEntry);
+                    }
+                } catch (Exception $e) {
+                    // Ignore for now... Twitter's offline quite a bit at times ;)
                 }
                 if (($lindexer = $this->getLuceneIndexer())) {
                     $lindexer->index($newEntry);

@@ -13,9 +13,15 @@ class Admin_BlogController extends Zend_Controller_Action
         }
     }
     
-    public function editAction()
+    public function deleteAction()
     {
-
+        $form = new Admin_Form_DeleteBlog;
+        $this->view->deleteBlogForm = $form;
+        $this->_addBlogsToForm($form);
+        $flashMessenger = $this->_helper->getHelper('FlashMessenger');
+        if ($flashMessenger->hasMessages()) {
+            $this->view->messages = $flashMessenger->getMessages();
+        }
     }
     
     public function processAction()
@@ -66,6 +72,28 @@ class Admin_BlogController extends Zend_Controller_Action
         $this->_redirect('/admin/blog/create');
     }
     
+    public function process2Action()
+    {
+        $form = new Admin_Form_DeleteBlog;
+        $this->_addBlogsToForm($form);
+        if (!$this->getRequest()->isPost()) {
+            return $this->_forward('admin/index');
+        }
+        $flashMessenger = $this->_helper->getHelper('FlashMessenger');
+        if (!$form->isValid($_POST)) {
+            $flashMessenger->addMessage('Form data invalid: recheck details and try again.');
+            $flashMessenger->addMessage('error');
+            $this->_redirect('/admin/blog/delete');
+        }
+        $values = $form->getValues();
+        $query = Doctrine_Query::create()
+            ->delete('Zfplanet_Model_Blog')
+            ->whereIn('id', $values['feeds']);
+        $flashMessenger->addMessage('Blogs successfully deleted!');
+        $flashMessenger->addMessage('success');
+        $this->_redirect('/admin/blog/delete');
+    }
+    
     protected function _checkPubsubEnabled(Zend_Feed_Reader_FeedAbstract $feed)
     {
         if (!$feed->getHubs()) {
@@ -105,6 +133,19 @@ class Admin_BlogController extends Zend_Controller_Action
                 return 'Atom 0.3';
             default:
                 return 'RSS';
+        }
+    }
+    
+    protected function _addBlogsToForm($form)
+    {
+        $feeds = Doctrine_Query::create()
+            ->from('Zfplanet_Model_Feed')
+            ->orderBy('title ASC')
+            ->execute();
+        $this->view->feedCount = count($feeds);
+        $checkbox = $form->getElement('feeds');
+        foreach ($feeds as $feed) {
+            $checkbox->addMultiOption($feed->Blog->id, $feed->title);
         }
     }
 

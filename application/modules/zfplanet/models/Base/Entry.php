@@ -77,7 +77,8 @@ abstract class Zfplanet_Model_Base_Entry extends Doctrine_Record
         parent::setUp();
         $this->hasOne('Zfplanet_Model_Feed as Feed', array(
              'local' => 'feedId',
-             'foreign' => 'id'));
+             'foreign' => 'id',
+             'onDelete' => 'CASCADE'));
 
         $timestampable0 = new Doctrine_Template_Timestampable(array(
              'created' => 

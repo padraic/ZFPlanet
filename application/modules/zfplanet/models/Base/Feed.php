@@ -59,7 +59,8 @@ abstract class Zfplanet_Model_Base_Feed extends Doctrine_Record
         parent::setUp();
         $this->hasOne('Zfplanet_Model_Blog as Blog', array(
              'local' => 'blogId',
-             'foreign' => 'id'));
+             'foreign' => 'id',
+             'onDelete' => 'CASCADE'));
 
         $this->hasMany('Zfplanet_Model_Entry as Entries', array(
              'local' => 'id',

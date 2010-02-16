@@ -46,6 +46,7 @@ Feed:
             local: blogId
             foreign: id
             foreignAlias: Feeds
+            onDelete: CASCADE
 Entry:
     columns:
         id:
@@ -82,6 +83,7 @@ Entry:
             local: feedId
             foreign: id
             foreignAlias: Entries
+            onDelete: CASCADE
 Subscription:
     columns:
         id:

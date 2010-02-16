@@ -1,0 +1,9 @@
+<p>Select which blog(s) to delete and submit. This will also forward unsubcribe requests to the Pubsubhubbbub hub if relevant to a deleted blog. Deleting a blog will also delete all of its feeds and entries from ZFPlanet.</p>
+<? if(isset($this->messages)): ?>
+    <p class="<?= $this->escape($this->messages[1]) ?> message"><?= $this->escape($this->messages[0]) ?><p>
+<? endif; ?>
+<? if($this->feedCount <= 0): ?>
+    <p class="info message">No blogs exist to delete.</p>
+<? else: ?>
+    <?= $this->deleteBlogForm ?>
+<? endif; ?>
