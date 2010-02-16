@@ -86,9 +86,19 @@ class Admin_BlogController extends Zend_Controller_Action
             $this->_redirect('/admin/blog/delete');
         }
         $values = $form->getValues();
+        // time to unsubscribe any blogs that were PuSH enabled
+        /*TODO
+        $feeds = Doctrine_Query::create()
+            ->from('Zfplanet_Model_Feed')
+            ->wherein('blogid', $values['feeds'])
+            ->execute();
+        */
+        // This is short because cascade deletes are enabled in Models (onDelete: CASCADE)
+        // so yes, this will delete all related feeds/entries too ;)
         $query = Doctrine_Query::create()
             ->delete('Zfplanet_Model_Blog')
-            ->whereIn('id', $values['feeds']);
+            ->whereIn('id', $values['feeds'])
+            ->execute();
         $flashMessenger->addMessage('Blogs successfully deleted!');
         $flashMessenger->addMessage('success');
         $this->_redirect('/admin/blog/delete');
