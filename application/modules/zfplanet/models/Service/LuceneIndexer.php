@@ -20,7 +20,7 @@ class Zfplanet_Model_Service_LuceneIndexer
         if (is_null($this->_index)) return;
         $doc = new Zend_Search_Lucene_Document;
         $doc->addField(
-            Zend_Search_Lucene_Field::UnIndexed(
+            Zend_Search_Lucene_Field::Keyword(
                 'id', $entry->id, 'utf-8'
             )
         );
@@ -47,6 +47,16 @@ class Zfplanet_Model_Service_LuceneIndexer
         $this->_index->addDocument($doc);
         $this->_index->commit();
         $this->_index->optimize();
+    }
+    
+    public function update(Zfplanet_Model_Entry $entry)
+    {
+        $hits = $this->_index->find('id:' . $entry->id);
+        foreach($hits as $hit) {
+            $this->_index->delete($hit->id);
+        }
+        $this->_index->commit();
+        $this->index($entry);
     }
     
     public function indexAll(array $entries)

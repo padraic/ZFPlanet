@@ -41,6 +41,7 @@ class Zfplanet_CronController extends Zend_Controller_Action
             foreach($feeds as $feed) {
                 if ($notifier->isEnabled()) $feed->setTwitterNotifier($notifier);
                 $feed->setLuceneIndexer($this->_getLuceneIndexer());
+                $feed->setLogger($this->getInvokeArg('bootstrap')->getResource('ErrorLog'));
                 $feed->synchronise();
             }
             $this->_helper->getHelper('Cache')->removePagesTagged(array('allentries'));
@@ -48,7 +49,7 @@ class Zfplanet_CronController extends Zend_Controller_Action
             echo 'Polling completed without error', PHP_EOL;
         } catch (Exception $e) {
             $logger = $this->getInvokeArg('bootstrap')->getResource('ErrorLog');
-            $message = 'Error/Exception encountered: ' . get_class($e) . ': '
+            $message = 'Other Error/Exception: ' . get_class($e) . ': '
                 . $e->getMessage() . PHP_EOL
                 . 'Stack Trace: ' . PHP_EOL . $e->getTraceAsString();
             $logger->log($message, Zend_Log::ERR);

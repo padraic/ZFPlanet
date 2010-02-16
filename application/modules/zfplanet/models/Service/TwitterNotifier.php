@@ -9,6 +9,8 @@ class Zfplanet_Model_Service_TwitterNotifier
     
     protected $_enabled = false;
     
+    protected $_encoding = 'UTF-8';
+    
     /**
      * Constructor
      *
@@ -17,9 +19,11 @@ class Zfplanet_Model_Service_TwitterNotifier
      */
     public function __construct(array $config, Zend_Cache_Core $cache)
     {
-        if (!($accessToken = $cache->load('accesstoken'))) {
+        $accessToken = $cache->load('accesstoken');
+        if (!$accessToken) {
             return;
         }
+        if (isset($config['twitter']['encoding'])) $this->_encoding = $config['twitter']['encoding'];
         $this->_enabled = true;
         $this->_tclient = $accessToken->getHttpClient($config['twitter']);
         $this->_tclient->setConfig(array('keepalive'=>true));
@@ -41,11 +45,22 @@ class Zfplanet_Model_Service_TwitterNotifier
             return;
         }
         $tlink = $this->_shortenLink($entry->uri);
-        $this->_tclient->setParameterPost(
-            'status',
-            substr($entry->title, 0, (139-strlen($tlink))) . ' ' . $tlink
-        );
-        $this->_tclient->request();
+        $status = $entry->title
+            . ' (by '
+            . $entry->author
+            .') '
+            . $tlink
+            . ' ';
+        $content = html_entity_decode(strip_tags($entry->content), ENT_QUOTES, $this->_encoding);
+        $appendContent = substr($content, 0, (136 - strlen($status)));
+        $status .= $appendContent . '...';
+        $this->_tclient->setParameterPost('status', $status);
+        $response = $this->_tclient->request();
+        if ($response->getStatus() == 304) {
+            throw new Exception('Twitter API limits exceeded');
+        } elseif ($response->getStatus() !== 200) {
+            throw new Exception('Twitter API Error - Status ' . $response->getStatus());
+        }
     }
     
     public function isEnabled()

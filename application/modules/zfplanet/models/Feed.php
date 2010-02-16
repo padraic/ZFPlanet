@@ -27,6 +27,11 @@ class Zfplanet_Model_Feed extends Zfplanet_Model_Base_Feed
      */
     protected $_luceneIndexer = null;
     
+    /**
+     * @var Zend_log
+     */
+    protected $_logger = null;
+    
     public function setHttpClient(Zend_Http_Client $httpClient)
     {
         $this->_httpClient = $httpClient;
@@ -61,7 +66,15 @@ class Zfplanet_Model_Feed extends Zfplanet_Model_Base_Feed
     {
         if (is_null($feed)) {
             Zend_Feed_Reader::setHttpClient($this->getHttpClient());
-            $feed = Zend_Feed_Reader::import($this->uri);
+            try {
+                $feed = Zend_Feed_Reader::import($this->uri);
+            } catch (Exception $e) {
+                $message = 'Failed Feed Import ('.$this->uri.'): ' . get_class($e) . ': '
+                    . $e->getMessage() . PHP_EOL
+                    . 'Stack Trace: ' . PHP_EOL . $e->getTraceAsString();
+                $this->getLogger()->log($message, Zend_Log::ERR);
+                return;
+            }
         }
         if ($this->uri !== $feed->getFeedLink() && !is_null($feed->getFeedLink())) {
             $this->uri = $feed->getFeedLink();
@@ -84,7 +97,15 @@ class Zfplanet_Model_Feed extends Zfplanet_Model_Base_Feed
                 $this->_setCommonData($currentEntry, $entry, $entryHash);
                 $currentEntry->save();
                 if (($lindexer = $this->getLuceneIndexer())) {
-                    $lindexer->index($currentEntry);
+                    try {
+                        $lindexer->update($currentEntry);
+                    } catch (Exception $e) {
+                        $message = 'Failed Lucene Indexing ('.$this->uri.'): ' . get_class($e) . ': '
+                            . $e->getMessage() . PHP_EOL
+                            . 'Stack Trace: ' . PHP_EOL . $e->getTraceAsString();
+                        $this->getLogger()->log($message, Zend_Log::ERR);
+                        return;
+                    }
                 }
             } else {
                 $newEntry = new Zfplanet_Model_Entry;
@@ -96,15 +117,26 @@ class Zfplanet_Model_Feed extends Zfplanet_Model_Base_Feed
                     ->get(Zend_Date::ISO_8601);
                 $newEntry->isActive = 1;
                 $newEntry->save();
-                try {
-                    if (($tnotifier = $this->getTwitterNotifier())) {
+                if (($tnotifier = $this->getTwitterNotifier())) {
+                    try {
                         $tnotifier->notify($newEntry);
+                    } catch (Exception $e) {
+                        $message = 'Failed Twitter Notification: ' . get_class($e) . ': '
+                            . $e->getMessage() . PHP_EOL
+                            . 'Stack Trace: ' . PHP_EOL . $e->getTraceAsString();
+                        $this->getLogger()->log($message, Zend_Log::ERR);
                     }
-                } catch (Exception $e) {
-                    // Ignore for now... Twitter's offline quite a bit at times ;)
                 }
                 if (($lindexer = $this->getLuceneIndexer())) {
-                    $lindexer->index($newEntry);
+                    try {
+                        $lindexer->index($newEntry);
+                    } catch (Exception $e) {
+                        $message = 'Failed Lucene Indexing ('.$this->uri.'): ' . get_class($e) . ': '
+                            . $e->getMessage() . PHP_EOL
+                            . 'Stack Trace: ' . PHP_EOL . $e->getTraceAsString();
+                        $this->getLogger()->log($message, Zend_Log::ERR);
+                        return;
+                    }
                 }
             }
         }
@@ -128,6 +160,16 @@ class Zfplanet_Model_Feed extends Zfplanet_Model_Base_Feed
     public function getLuceneIndexer()
     {
         return $this->_luceneIndexer;
+    }
+    
+    public function setLogger(Zend_log $log)
+    {
+        $this->_logger = $log;
+    }
+    
+    public function getLogger()
+    {
+        return $this->_logger;
     }
     
     protected function _setCommonData(Zfplanet_Model_Entry $model,
