@@ -87,12 +87,11 @@ class Admin_BlogController extends Zend_Controller_Action
         }
         $values = $form->getValues();
         // time to unsubscribe any blogs that were PuSH enabled
-        /*TODO
         $feeds = Doctrine_Query::create()
             ->from('Zfplanet_Model_Feed')
             ->wherein('blogid', $values['feeds'])
             ->execute();
-        */
+        if ($feeds) $this->_checkPubsubDisabled($feeds);
         // This is short because cascade deletes are enabled in Models (onDelete: CASCADE)
         // so yes, this will delete all related feeds/entries too ;)
         $query = Doctrine_Query::create()
@@ -109,7 +108,7 @@ class Admin_BlogController extends Zend_Controller_Action
         if (!$feed->getHubs()) {
             return;
         }
-        $hubs = $feed->getHubs();;
+        $hubs = $feed->getHubs();
         $sub = new Zend_Feed_Pubsubhubbub_Subscriber;
         $sub->setStorage(Doctrine_Core::getTable('Zfplanet_Model_Subscription'));
         $sub->addHubUrls($hubs);
@@ -119,6 +118,28 @@ class Admin_BlogController extends Zend_Controller_Action
             $this->_getCallbackUri()
         );
         $sub->subscribeAll();
+    }
+    
+    protected function _checkPubsubDisabled(array $feeds)
+    {
+        $feedUris = array();
+        foreach ($feeds as $feed) $feedUris[] = $feed->uri;
+        $subs = Doctrine_Query::create()
+            ->from('Zfplanet_Model_Subscription')
+            ->whereIn('topic_url', $feedUris)
+            ->execute();
+        $sub = new Zend_Feed_Pubsubhubbub_Subscriber;
+        $sub->setStorage(Doctrine_Core::getTable('Zfplanet_Model_Subscription'));
+        $sub->usePathParameter();
+        $sub->setCallbackUrl(
+            $this->_getCallbackUri()
+        );
+        foreach($subs as $subscription) {
+            foreach($sub->getHubUrls() as $url) $sub->removeHubUrl($url); //reset
+            $sub->addHubUrl($sub->hub_url);
+            $sub->setTopicUrl($sub->topic_url);
+            $sub->unsubscribeAll()   
+        }
     }
     
     protected function _getCallbackUri()
