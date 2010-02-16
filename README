@@ -28,8 +28,8 @@ Prerequisites
 =============
 
 The application is not packaged with the Zend Framework. Prior to use, you should
-ensure Zend Framework 1.10.1 is available from your include_path. At the time of
-writing, 1.10.1 is not released as stable and therefore you are required to
+ensure Zend Framework 1.10.2 is available from your include_path. At the time of
+writing, 1.10.2 is not released as stable and therefore you are required to
 use the current Subversion HEAD of the standard trunk until a stable release is
 available. This ensures the application has access to as yet unreleased
 improvements.
@@ -55,9 +55,11 @@ library explicitly prior to any Zend namespaced classes being required.
 Virtual Host is pointing to the ./public directory as the Host's document
 root. The ./data directory (and its sub-directories) should be writeable from
 PHP, either by setting relevant permissions or changing the directories' ownership
-to the user under which HTTP requests are served. For example:
+to the user under which HTTP requests are served. The same goes for the ./public
+directory's cached subdirectory. For example:
 
     sudo chown -R www-data:www-data ./data
+    sudo chown www-data:www-data ./public/cached
 
 If using a Virtual Host, if using this in production you may consider adding the
 contents of ./public/.htaccess to your Virtual Host configuration to gain some
@@ -78,19 +80,24 @@ setting to reflect the hostname of your URI, for example:
 This is used to generate URIs for the application when the CLI tasks are running
 (since we cannot access $_SERVER['HTTP_HOST'] from the command line).
 
-In site.ini, you can configure the title of the Planet Blog itself. There no
-other site details necessary, but if any arise they will be configurable from
-here.
+In site.ini, you can configure the title of the Planet Blog itself. This config
+file also allows for setting up Twitter OAuth credentials (so the planet can
+optionally tweet about updates) and a ShareThis Publisher ID (to enable
+ShareThis dialogs next to articles).
 
 There are four configurations for a simple reason. application.ini is a base
 configuration merged with one of http.ini or cli.ini depending on whether the
 application is accessed over HTTP or via the ./scripts/zf-cli script over the
-command line (e.g. with a cronjob).
+command line (e.g. with a cronjob). site.ini is specifically geared towards
+site specific naming and service APIs.
     
-4. Create a new database (and optionally user). Edit the above configuration line
-in both configuration files to reflect these details. The initial protocol name
+4. Create a new database (and optionally user). For MySQL, you should not use
+MyISAM tables as they do not support cascading deletes and updates used by the
+application's Model layer. Edit the configuration line (noted earlier)
+in application.ini to reflect these details. The initial protocol name
 of "mysql" assumes a MySQL database but can be edited with reference to the
-Doctrine ORM 1.2 documentation for a DSN string.
+Doctrine ORM 1.2 documentation for a DSN string. While we intend supporting
+multiple database, MySQL is the only one officially supported at this time.
 
 5. From the command line navigate to the base directory of the application and
 issue the following command:
@@ -110,10 +117,10 @@ the hour and the half past mark):
     0,30 * * * * /path/to/scripts/zf-cli -e production -c cron -a poll > /dev/null
 
 This directs that the Poll action of the Cron controller be executed given a
-production environment. The output is directed to the null device and not logged
-(yet). You can pipe the output (if any) to a log file of your choice. Manual
-runs would echo any Exceptions to the screen for simple debugging/logging over
-the pipe.
+production environment. The output is directed to the null device. You can pipe
+the output (if any) to a log file of your choice. By default, issues with polling
+(primarily exception traces) are logged to ./data/log/feedsync.log. This can
+be examined to identify fatal polling failures.
 
 Since the script also cleans the static file cache of any HTML pages or XML feeds
 to allow for a refresh based on any new entries, the script should be run with
@@ -134,7 +141,7 @@ leaving it place only as long as it is needed to setup the cronjob.
 7. Add some blogs! At present a default user is not created (all users are
 Administrators). You can manually add one to the database's "user" table. The
 password should be a SHA256 hash of the actual password if entered directly into
-the entry via something like the mysql cli or phpmyadmin.
+the entry via something like the mysql client or phpmyadmin.
 
 To access the administration section, simply direct your browser to
 http://yourhost/admin.
