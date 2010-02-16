@@ -22,7 +22,7 @@ are pieces of functionality yet to be added. It is not yet suitable to be used
 in production. It's presented here untagged and non-versioned as a demo app for
 Zend Framework 1.10. I'll switch its status to stable when its ready ;).
 
-Estimated status is ALPHA (feature complete but probably unstable).
+Estimated status is BETA (mostly complete but may be unstable/unoptimised).
 
 Prerequisites
 =============
