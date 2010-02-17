@@ -17,7 +17,7 @@
 </div>
 <p><br/><a href="<?= $this->escape($this->entry->uri) ?>">Link to original article by
 <?= $this->escape($this->entry->author) ?></a>
-<? if($this->siteInfo('sharethis_id')): ?>
-    | <?= $this->shareThis($this->siteInfo('sharethis_id'), $this->entry) ?>
+<? if($this->siteInfo('publisherId', 'sharethis')): ?>
+    | <?= $this->shareThis($this->siteInfo('publisherId', 'sharethis'), $this->entry) ?>
 <? endif; ?>
 </p>
