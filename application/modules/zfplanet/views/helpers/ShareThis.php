@@ -18,7 +18,7 @@ LINK;
         $script = <<<SCRIPT
 <script language="javascript" type="text/javascript">
 var object_$count = SHARETHIS.addEntry(
-    {title:'{$this->view->escape($entry->title)}',
+    {title:'{$this->view->escape($entry->title)} (by {$this->view->escape($entry->author)})',
     url:'{$entry->uri}'},
     {button:false}
 );
