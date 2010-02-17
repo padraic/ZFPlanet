@@ -57,6 +57,8 @@ resources.cacheManager.twitter.backend.name = "File"
 resources.cacheManager.twitter.frontend.options.automatic_serialization = true
 resources.cacheManager.twitter.frontend.options.automatic_cleaning_factor = 0
 resources.cacheManager.twitter.backend.options.cache_dir = APPLICATION_PATH "/../data/cache/twitter"
+; For the CLI scripts, you may need to set a more liberal umask if not running as the www/www-data user
+;resources.cacheManager.twitter.backend.options.cache_file_umask = 0770
 
 ; Lucene Search Index
 search.indexPath = APPLICATION_PATH "/../data/search"

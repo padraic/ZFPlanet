@@ -9,13 +9,13 @@ class Zfplanet_View_Helper_SiteInfo extends Zend_View_Helper_Abstract
     {
         $this->_data = Zend_Controller_Front::getInstance()
             ->getParam('bootstrap')
-            ->getOption('site');
+            ->getOptions();
     }
 
-    public function siteInfo($name)
+    public function siteInfo($name, $term = 'site')
     {
-        if (isset($this->_data[$name])) {
-            return $this->_data[$name];
+        if (isset($this->_data[$term]) && isset($this->_data[$term][$name])) {
+            return $this->_data[$term][$name];
         }
         return null;
     }

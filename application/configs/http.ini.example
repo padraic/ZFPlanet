@@ -39,6 +39,19 @@ resources.session.use_only_cookies = true
 resources.session.cookie_httponly = true
 resources.session.remember_me_seconds = 900
 
+; CACHES
+; Custom Caches
+resources.cacheManager.config.frontend.name = "File"
+resources.cacheManager.config.frontend.params.automatic_serialization = true
+resources.cacheManager.config.frontend.params.lifetime = null
+resources.cacheManager.config.frontend.params.automatic_cleaning_factor = 0
+resources.cacheManager.config.frontend.params.masterFiles[] = APPLICATION_PATH "/configs/application.ini"
+resources.cacheManager.config.frontend.params.masterFiles[] = APPLICATION_PATH "/configs/site.ini"
+resources.cacheManager.config.frontend.params.masterFiles[] = APPLICATION_PATH "/configs/cli.ini"
+resources.cacheManager.config.frontend.params.masterFiles[] = APPLICATION_PATH "/configs/http.ini"
+resources.cacheManager.config.backend.name = "File"
+resources.cacheManager.config.backend.params.cache_dir = APPLICATION_PATH "/../data/cache/config"
+
 ; ROUTES
 ; Callback Route For Pubsubhubbub Callbacks
 resources.router.routes.callback.route = "callback/:subscriptionKey"

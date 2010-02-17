@@ -38,8 +38,8 @@ site.description = "Collected entries from a group of bloggers."
 ; API authentication details for the bit.ly API. Used to shorten article URLs
 ; if Twitter notifications are being utilised. If not supplied, URLs will be
 ; posted as is without shortening.
-bitly.login = ""
-bitly.apiKey = ""
+;bitly.login = ""
+;bitly.apiKey = ""
 
 [staging : production]
 [testing : production]
