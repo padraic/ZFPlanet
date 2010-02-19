@@ -24,7 +24,7 @@ class Zfplanet_FeedController extends Zend_Controller_Action
             ->from('Zfplanet_Model_Entry')
             ->orderBy('dateModified DESC')
             ->fetchone();
-        // todo: check if this was successful in case no entries yet
+        // TODO: check if this was successful in case no entries yet
         $lastSyncDate = new Zend_Date(
             $lastSyncedEntry->dateModified,
             Zend_Date::ISO_8601
@@ -64,13 +64,13 @@ class Zfplanet_FeedController extends Zend_Controller_Action
             ->execute();
         $now = new Zend_Date;
         $feed = new Zend_Feed_Writer_Feed;
-         // TODO: Extract site info to config file and detect feed URLs automatically from HOST
+         // TODO: Extract site info to config file and detect feed DATA
         $feed->setTitle('ZF Planet');
         $feed->setDescription('Zend Framework Blog Planet');
         $feed->setDateModified($now);
-        $feed->setLink('http://zfplanet');
-        $feed->setFeedLink('http://zfplanet/feed/atom', 'atom');
-        $feed->setFeedLink('http://zfplanet/feed/rss', 'rss');
+        $feed->setLink($this->_getBaseUri());
+        $feed->setFeedLink($this->_getBaseUri() . 'feed/atom', 'atom');
+        $feed->setFeedLink($this->_getBaseUri() . 'feed/rss', 'rss');
         $feed->addHubs(array(
             'http://pubsubhubbub.appspot.com/'
         ));
@@ -90,6 +90,17 @@ class Zfplanet_FeedController extends Zend_Controller_Action
             $updatedDate = new Zend_Date($data->updatedDate, Zend_Date::ISO_8601);
             $entry->setDateModified($updatedDate);
             $feed->addEntry($entry);
+            $source = $entry->createSource();
+            $source->setTitle($data->Feed->FeedMeta->title);
+            if (isset($data->Feed->FeedMeta->description)
+            && !empty($data->Feed->FeedMeta->description)) {
+                $source->setDescription($data->Feed->FeedMeta->description);    
+            }
+            $source->setLink($data->Feed->FeedMeta->link);
+            $source->setFeedLink($data->Feed->FeedMeta->feedLink, 'atom');
+            $updatedDate = new Zend_Date($data->Feed->lastSynchronised, Zend_Date::ISO_8601);
+            $source->setDateModified($updatedDate);
+            $entry->setSource($source);
         }
         return $feed;
     }
@@ -110,6 +121,13 @@ class Zfplanet_FeedController extends Zend_Controller_Action
         }
         $this->getResponse()->setHttpResponseCode(304);
         return true;
+    }
+    
+    protected function _getBaseUri()
+    {
+        $uri = Zend_Uri::factory('http');
+        $uri->setHost($_SERVER['HTTP_HOST']);
+        return rtrim($uri->getUri(), '/') . '/';
     }
 
 }

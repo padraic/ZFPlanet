@@ -13,6 +13,7 @@
  * @property integer $isActive
  * @property timestamp $lastSynchronised
  * @property Zfplanet_Model_Blog $Blog
+ * @property Zfplanet_Model_FeedMeta $FeedMeta
  * @property Doctrine_Collection $Entries
  * 
  * @package    ##PACKAGE##
@@ -61,6 +62,10 @@ abstract class Zfplanet_Model_Base_Feed extends Doctrine_Record
              'local' => 'blogId',
              'foreign' => 'id',
              'onDelete' => 'CASCADE'));
+
+        $this->hasOne('Zfplanet_Model_FeedMeta as FeedMeta', array(
+             'local' => 'id',
+             'foreign' => 'feedId'));
 
         $this->hasMany('Zfplanet_Model_Entry as Entries', array(
              'local' => 'id',

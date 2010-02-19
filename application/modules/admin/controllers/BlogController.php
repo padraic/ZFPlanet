@@ -52,8 +52,8 @@ class Admin_BlogController extends Zend_Controller_Action
             $this->_redirect('/admin/blog/create');
         }
         $blog->feedId = $data->getId();
-        $blog->save();
         $feed = new Zfplanet_Model_Feed;
+        $feedMeta = new Zfplanet_Model_FeedMeta;
         $feed->id = $data->getId();
         $feed->uri = $data->getFeedLink();
         if (isset($feed->uri)) {
@@ -63,10 +63,15 @@ class Admin_BlogController extends Zend_Controller_Action
         $feed->title = Zfplanet_Model_Feed::getHtmlPurifier()->purify($data->getTitle());
         $feed->type = $this->_getFeedVersion($data->getType());
         $feed->isActive = 1;
-        $feed->save();
-        $this->_checkPubsubEnabled($data);
+        $feedMeta->feedId = $data->getId();
+        $feedMeta->title = $data->getTitle();
+        $feedMeta->description = $data->getDescription();
+        $feedMeta->link = $data->getLink();
+        $feedMeta->feedLink = $data->getFeedLink();
         $blog->save();
         $feed->save();
+        $feedMeta->save();
+        $this->_checkPubsubEnabled($data);
         $flashMessenger->addMessage('Blog successfully added!');
         $flashMessenger->addMessage('success');
         $this->_redirect('/admin/blog/create');
@@ -138,7 +143,7 @@ class Admin_BlogController extends Zend_Controller_Action
             foreach($sub->getHubUrls() as $url) $sub->removeHubUrl($url); //reset
             $sub->addHubUrl($sub->hub_url);
             $sub->setTopicUrl($sub->topic_url);
-            $sub->unsubscribeAll()   
+            $sub->unsubscribeAll();
         }
     }
     

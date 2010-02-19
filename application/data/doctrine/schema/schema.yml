@@ -47,6 +47,35 @@ Feed:
             foreign: id
             foreignAlias: Feeds
             onDelete: CASCADE
+FeedMeta:
+    columns:
+        id:
+            type: integer
+            primary: true
+            autoincrement: true
+        feedId:
+            type: string(255)
+        title:
+            type: string(255)
+        description:
+            type: string(255)
+        link:
+            type: string(255)
+        feedLink:
+            type: string(255)
+    actAs:
+        Timestampable:
+            created:
+                name: dateCreated
+            updated:
+                name: dateModified
+    relations:
+        Feed:
+            local: feedId
+            foreign: id
+            foreignAlias: FeedMeta
+            foreignType: one
+            onDelete: CASCADE
 Entry:
     columns:
         id:
