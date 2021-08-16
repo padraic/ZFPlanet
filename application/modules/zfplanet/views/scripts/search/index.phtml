@@ -1,8 +1,0 @@
-<?php if(!isset($this->results) || empty($this->results)): ?>
-    <p class="message info">No results found.</p>
-<? else: ?>
-    <p class="message success">Results found.</p>
-    <? foreach($this->results as $result): ?>
-        <p><?= $this->escape($result->title) ?>: <a href="<?= $this->escape($result->uri) ?>"><?= $this->escape($result->uri) ?></a></p>
-    <? endforeach; ?>
-<?php endif; ?>
